@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>South Family Cruise</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚢</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sea: #0B3954;
+    --teal: #1B998B;
+    --sky: #7FD1E8;
+    --sand: #FFF8EE;
+    --coral: #FF6B5B;
+    --sun: #FFC857;
+    --ink: #1C2B36;
+    --muted: #5E6E7A;
+    --line: #EDE3D3;
+    --card: #FFFFFF;
+    --display: "Bricolage Grotesque", Georgia, serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--sand);
+    color: var(--ink);
+    font: 16px/1.6 "DM Sans", system-ui, sans-serif;
+  }
+  a { color: var(--teal); font-weight: 500; }
+  h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+
+  /* Hero */
+  .hero {
+    position: relative;
+    color: #fff;
+    background: linear-gradient(180deg, #2D9CDB 0%, #56C1E0 45%, #1B998B 100%);
+    padding: 1.25rem 0 7.5rem;
+    overflow: hidden;
+  }
+  .hero .sun {
+    position: absolute; right: 8%; top: 2.5rem;
+    width: 120px; height: 120px; border-radius: 50%;
+    background: radial-gradient(circle, #FFE08A 0%, var(--sun) 60%, rgba(255,200,87,0) 72%);
+    animation: glow 6s ease-in-out infinite;
+  }
+  @keyframes glow { 50% { transform: scale(1.08); } }
+  .hero .kicker {
+    display: inline-block; margin-top: 3rem;
+    background: rgba(255,255,255,.2); backdrop-filter: blur(4px);
+    padding: .3rem .9rem; border-radius: 99px; font-weight: 700; font-size: .9rem; letter-spacing: .02em;
+  }
+  .hero h1 { font-size: clamp(2.6rem, 8vw, 5.2rem); font-weight: 800; margin: .9rem 0 .5rem; max-width: 12ch; text-shadow: 0 2px 20px rgba(11,57,84,.25); }
+  .hero .sub { font-size: 1.2rem; margin: 0; opacity: .95; }
+  .countdown { display: flex; gap: .75rem; margin-top: 2rem; flex-wrap: wrap; }
+  .countdown div {
+    background: rgba(255,255,255,.95); color: var(--sea);
+    border-radius: 16px; padding: .7rem 1rem; min-width: 92px; text-align: center;
+    box-shadow: 0 8px 24px rgba(11,57,84,.18);
+  }
+  .countdown b { display: block; font-family: var(--display); font-size: 2.2rem; font-weight: 800; line-height: 1; }
+  .countdown span { font-size: .8rem; color: var(--muted); font-weight: 500; }
+  .countdown-label { margin-top: .75rem; font-weight: 500; opacity: .95; }
+  .waves { position: absolute; left: 0; bottom: -1px; width: 200%; height: 90px; animation: drift 18s linear infinite; }
+  .waves.back { opacity: .45; animation-duration: 28s; bottom: 12px; }
+  @keyframes drift { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .waves, .hero .sun { animation: none; } }
+
+  /* Nav */
+  nav { position: sticky; top: 0; z-index: 10; background: rgba(255,248,238,.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  nav .wrap { display: flex; gap: .4rem; overflow-x: auto; padding-top: .6rem; padding-bottom: .6rem; scrollbar-width: none; }
+  nav a { color: var(--sea); text-decoration: none; font-size: .9rem; padding: .35rem .8rem; border-radius: 99px; white-space: nowrap; }
+  nav a:hover { background: #fff; }
+
+  section { padding: 3.5rem 0 1rem; scroll-margin-top: 50px; }
+  .head { margin-bottom: 1.5rem; }
+  .head h2 { font-size: clamp(1.8rem, 4vw, 2.4rem); color: var(--sea); font-weight: 800; }
+  .head p { color: var(--muted); margin: .4rem 0 0; }
+  .card { background: var(--card); border-radius: 20px; box-shadow: 0 1px 2px rgba(28,43,54,.05), 0 8px 28px rgba(28,43,54,.06); }
+
+  /* Facts */
+  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); background: #fff; border-radius: 20px; overflow: hidden; margin: 0; box-shadow: 0 8px 28px rgba(28,43,54,.06); }
+  .facts div { padding: 1.1rem 1.3rem; box-shadow: 0 1px 0 var(--line), 1px 0 0 var(--line); }
+  .facts dt { color: var(--muted); font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; }
+  .facts dd { margin: .15rem 0 0; font-weight: 700; font-size: 1.05rem; color: var(--sea); }
+
+  /* Days */
+  .days { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1rem; }
+  .day { padding: 1.2rem; position: relative; transition: transform .2s; }
+  .day:hover { transform: translateY(-3px); }
+  .day .icon { font-size: 2rem; line-height: 1; }
+  .day .date { color: var(--muted); font-size: .85rem; font-weight: 500; margin-top: .6rem; }
+  .day h3 { font-size: 1.3rem; color: var(--sea); margin: .15rem 0 .3rem; }
+  .day .note { color: var(--muted); font-size: .92rem; margin: 0; }
+  .day.ship { background: linear-gradient(160deg, #fff 55%, #E3F6F4 100%); }
+  .day.ship::after {
+    content: "On the ship"; position: absolute; top: 1rem; right: 1rem;
+    font-size: .72rem; font-weight: 700; color: var(--teal); background: #E3F6F4; padding: .15rem .55rem; border-radius: 99px;
+  }
+  .day ul { list-style: none; margin: .8rem 0 0; padding: 0; }
+  .day li { font-size: .92rem; padding: .45rem 0; border-top: 1px dashed var(--line); }
+  .day li i { color: var(--coral); font-style: normal; font-size: .78rem; font-weight: 700; display: block; }
+
+  /* Good to know */
+  .know { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1rem; }
+  .know .card { padding: 1.3rem; }
+  .know .icon { width: 44px; height: 44px; border-radius: 12px; background: #FFF1DA; display: grid; place-items: center; font-size: 1.4rem; margin-bottom: .75rem; }
+  .know h3 { font-size: 1.15rem; color: var(--sea); margin-bottom: .35rem; }
+  .know p { margin: 0; font-size: .95rem; }
+
+  /* Hotel + travel */
+  .hotel { padding: 1.5rem; display: grid; grid-template-columns: auto 1fr; gap: 1.2rem; align-items: start; margin-bottom: 1.5rem; }
+  .hotel .big { font-size: 2.6rem; line-height: 1; }
+  .hotel h3 { font-size: 1.35rem; color: var(--sea); }
+  .hotel .status { display: inline-block; margin: .4rem 0 .6rem; font-size: .85rem; font-weight: 700; background: #FFF1DA; color: #9A5B00; padding: .2rem .7rem; border-radius: 99px; }
+  .hotel ul { margin: 0; padding-left: 1.1rem; }
+  .hotel li { margin: .2rem 0; }
+
+  .alert { display: flex; gap: .75rem; align-items: center; background: #FFE9E6; color: #8A2A1F; border-radius: 14px; padding: .85rem 1.1rem; margin-bottom: 1rem; }
+  .alert.ok { background: #E3F6F4; color: #0F5E55; }
+  .families { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
+  .fam { padding: 1.1rem 1.2rem; }
+  .fam h3 { font-size: 1.1rem; color: var(--sea); display: flex; justify-content: space-between; gap: .5rem; align-items: baseline; }
+  .fam .rooms { font-family: "DM Sans", sans-serif; font-size: .78rem; color: var(--muted); font-weight: 500; white-space: nowrap; }
+  .leg { display: grid; grid-template-columns: 1.6rem 1fr; font-size: .92rem; margin-top: .45rem; }
+  .missing { color: var(--coral); font-weight: 500; }
+  .totals { margin-top: 1rem; color: var(--muted); font-size: .92rem; }
+
+  /* Tasks */
+  .progress { height: 12px; background: #fff; border-radius: 99px; overflow: hidden; margin: 0 0 1.25rem; box-shadow: inset 0 0 0 1px var(--line); }
+  .progress div { height: 100%; background: linear-gradient(90deg, var(--teal), var(--sky)); border-radius: 99px; }
+  .tasks { padding: .4rem 0; }
+  .task { display: grid; grid-template-columns: 1.8rem 1fr auto; gap: .6rem; align-items: center; padding: .75rem 1.2rem; border-top: 1px solid #F3ECE0; }
+  .task:first-child { border-top: 0; }
+  .task .check { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--line); display: grid; place-items: center; font-size: .75rem; color: #fff; }
+  .task.done .check { background: var(--teal); border-color: var(--teal); }
+  .task .who { font-size: .8rem; color: var(--muted); }
+  .task .due { font-size: .78rem; font-weight: 700; color: var(--muted); background: var(--sand); padding: .15rem .6rem; border-radius: 99px; white-space: nowrap; }
+
+  /* Ideas */
+  .ideas { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: .9rem; }
+  .idea { padding: 1rem 1.1rem; border-radius: 16px; font-weight: 500; transform: rotate(var(--r)); transition: transform .2s; }
+  .idea:hover { transform: rotate(0) scale(1.03); }
+  .idea span { display: block; margin-top: .5rem; font-size: .8rem; font-weight: 700; opacity: .7; }
+
+  footer { text-align: center; color: var(--muted); font-size: .9rem; padding: 4rem 0 3rem; }
+  footer .boat { font-size: 2rem; display: block; margin-bottom: .5rem; }
+
+  @media (max-width: 600px) {
+    .hero .sun { width: 80px; height: 80px; top: 1.5rem; right: 4%; }
+    .countdown div { min-width: 0; flex: 1; padding: .6rem .5rem; }
+    .countdown b { font-size: 1.7rem; }
+    .hotel { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="sun"></div>
+  <div class="wrap">
+    <span class="kicker" id="kicker"></span>
+    <h1 id="title"></h1>
+    <p class="sub" id="subtitle"></p>
+    <div class="countdown" id="countdown"></div>
+    <div class="countdown-label">until we set sail from Miami</div>
+  </div>
+  <svg class="waves back" viewBox="0 0 2880 90" preserveAspectRatio="none" aria-hidden="true"><path fill="#FFF8EE" d="M0 45 Q180 5 360 45 T720 45 T1080 45 T1440 45 T1800 45 T2160 45 T2520 45 T2880 45 V90 H0Z"/></svg>
+  <svg class="waves" viewBox="0 0 2880 90" preserveAspectRatio="none" aria-hidden="true"><path fill="#FFF8EE" d="M0 55 Q240 20 480 55 T960 55 T1440 55 T1920 55 T2400 55 T2880 55 V90 H0Z"/></svg>
+</div>
+
+<nav><div class="wrap">
+  <a href="#trip">The trip</a>
+  <a href="#schedule">Schedule</a>
+  <a href="#know">Good to know</a>
+  <a href="#travel">Travel and hotel</a>
+  <a href="#tasks">Tasks</a>
+  <a href="#ideas">Ideas</a>
+</div></nav>
+
+<main class="wrap">
+  <section id="trip">
+    <div class="head"><h2>The trip</h2><p>Everything booked so far.</p></div>
+    <dl class="facts" id="facts"></dl>
+  </section>
+
+  <section id="schedule">
+    <div class="head"><h2>The week</h2><p>Eight days, four nights at sea, one big family.</p></div>
+    <div class="days" id="days"></div>
+  </section>
+
+  <section id="know">
+    <div class="head"><h2>Good to know</h2><p>What we've already found out.</p></div>
+    <div class="know" id="goodToKnow"></div>
+  </section>
+
+  <section id="travel">
+    <div class="head"><h2>Travel and hotel</h2><p>Who's arriving when, and where we're staying before we sail.</p></div>
+    <div class="card hotel" id="hotel"></div>
+    <div id="travelStatus"></div>
+    <div class="families" id="families"></div>
+    <p class="totals" id="totals"></p>
+  </section>
+
+  <section id="tasks">
+    <div class="head"><h2>Tasks</h2><p id="taskStatus"></p></div>
+    <div class="progress"><div id="bar"></div></div>
+    <div class="card tasks" id="taskList"></div>
+  </section>
+
+  <section id="ideas">
+    <div class="head"><h2>Ideas board</h2><p>From the family brainstorm. Nothing here is decided yet.</p></div>
+    <div class="ideas" id="ideaList"></div>
+  </section>
+</main>
+
+<footer class="wrap" id="footer"></footer>
+
+<script src="data.js"></script>
+<script>
+  const D = window.CRUISE;
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  $("kicker").textContent = "🎉 Feb 15 to 19, 2027";
+  $("title").textContent = D.trip.title;
+  $("subtitle").textContent = D.trip.subtitle;
+
+  function tick() {
+    const ms = new Date(D.trip.departs) - new Date();
+    if (ms <= 0) { $("countdown").innerHTML = "<div><b>Bon voyage!</b></div>"; return; }
+    const parts = [[Math.floor(ms / 864e5), "days"], [Math.floor(ms / 36e5) % 24, "hours"], [Math.floor(ms / 6e4) % 60, "minutes"]];
+    $("countdown").innerHTML = parts.map(([n, l]) => `<div><b>${n}</b><span>${l}</span></div>`).join("");
+  }
+  tick(); setInterval(tick, 30000);
+
+  $("facts").innerHTML = D.trip.facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("");
+
+  $("days").innerHTML = D.days.map(day => `
+    <div class="card day${day.ship ? " ship" : ""}">
+      <div class="icon">${day.icon}</div>
+      <div class="date">${esc(day.date)}</div>
+      <h3>${esc(day.label)}</h3>
+      ${day.note ? `<p class="note">${esc(day.note)}</p>` : ""}
+      ${day.blocks.length ? `<ul>${day.blocks.map(([t, what]) => `<li><i>${esc(t)}</i>${esc(what)}</li>`).join("")}</ul>` : ""}
+    </div>`).join("");
+
+  // goodToKnow text holds trusted markup from data.js
+  $("goodToKnow").innerHTML = D.goodToKnow.map(([icon, k, v]) =>
+    `<div class="card"><div class="icon">${icon}</div><h3>${esc(k)}</h3><p>${v}</p></div>`).join("");
+
+  const H = D.hotel;
+  $("hotel").innerHTML = `<div class="big">🏨</div><div><h3>${esc(H.name)}</h3>
+    <span class="status">${esc(H.status)}</span><ul>${H.perks.map(p => `<li>${esc(p)}</li>`).join("")}</ul></div>`;
+
+  const missing = D.travel.filter(r => !r[1]).map(r => r[0]);
+  $("travelStatus").innerHTML = missing.length
+    ? `<div class="alert">📣 <div><strong>Still need travel plans from:</strong> ${missing.map(esc).join(", ")}. Add them to the planning sheet!</div></div>`
+    : `<div class="alert ok">✅ <div>Everyone's travel plans are in.</div></div>`;
+  const leg = (icon, v) => `<div class="leg"><span>${icon}</span><span>${v ? esc(v) : `<span class="missing">Not in yet</span>`}</span></div>`;
+  const rooms = (sat, sun) => (sat === null && sun === null) ? "" :
+    `<span class="rooms">Rooms: Sat ${sat ?? "?"}, Sun ${sun ?? "?"}</span>`;
+  $("families").innerHTML = D.travel.map(([fam, arr, dep, sat, sun]) =>
+    `<div class="card fam"><h3>${esc(fam)} ${rooms(sat, sun)}</h3>${leg("🛬", arr)}${leg("🛫", dep)}</div>`).join("");
+  const sum = i => D.travel.reduce((a, r) => a + (r[i] || 0), 0);
+  $("totals").textContent = `Hotel rooms needed so far: ${sum(3)} on Saturday night and ${sum(4)} on Sunday night.`;
+
+  const done = D.tasks.filter(t => t[3]).length;
+  $("taskStatus").textContent = `${done} of ${D.tasks.length} have answers or notes so far.`;
+  $("bar").style.width = `${Math.round(100 * done / D.tasks.length)}%`;
+  $("taskList").innerHTML = D.tasks.map(([who, task, due, isDone]) => `
+    <div class="task${isDone ? " done" : ""}">
+      <div class="check">${isDone ? "✓" : ""}</div>
+      <div>${esc(task)}<div class="who">${esc(who)}</div></div>
+      ${due ? `<span class="due">${esc(due)}</span>` : "<span></span>"}
+    </div>`).join("");
+
+  const notes = ["#FFF1DA", "#E3F6F4", "#FFE9E6", "#E6F0FF", "#F3EAFE"];
+  $("ideaList").innerHTML = D.ideas.map(([who, idea], i) =>
+    `<div class="idea" style="background:${notes[i % notes.length]};--r:${[-1.2, .8, -.4, 1.1, -.8][i % 5]}deg">${esc(idea)}<span>${esc(who)}</span></div>`).join("");
+
+  $("footer").innerHTML = `<span class="boat">🚢</span>Pulled from the family planning sheet on ${esc(D.updated)}.<br>Add or change things in the sheet, and this page gets updated from it.`;
+</script>
+</body>
+</html>
