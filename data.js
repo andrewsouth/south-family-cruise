@@ -23,7 +23,7 @@ window.CRUISE = {
   days: [
     { date: "Sat, Feb 13", icon: "✈️", label: "Travel day", note: "Early arrivals come in to Miami", blocks: [] },
     { date: "Sun, Feb 14", icon: "🌴", label: "Together in Miami", note: "Optional activities", blocks: [
-      ["7a to 11a", "Church at the local ward"],
+      ["7a to 11a", "Church at the English ward, 665 Mokena Drive, Miami Springs"],
       ["11a to 3p", "Lunch (box lunches brought in)"]
     ]},
     { date: "Mon, Feb 15", icon: "🚢", ship: true, label: "Sail away", note: "Departs Miami at 4:00 pm", blocks: [
@@ -45,6 +45,7 @@ window.CRUISE = {
   // Things already figured out (from the task list notes).
   // [icon, heading, text]
   goodToKnow: [
+    ["⛪", "Church on Sunday, Feb 14", "We'll attend the English ward at <strong>665 Mokena Drive, Miami Springs, FL 33166</strong>. Meeting time is still to be confirmed. <a href=\"https://www.google.com/maps/search/?api=1&query=665+Mokena+Drive+Miami+Springs+FL+33166\" target=\"_blank\" rel=\"noopener\">Open in Maps</a>."],
     ["📱", "Download the app first", "Everyone should download the Royal Caribbean app and create an account at royalcaribbean.com <em>before</em> the cruise. It has the daily schedule, competitions, reminders, and updates."],
     ["🍽️", "Meals", "Breakfast 6:30 to 10:30 am. Lunch 11:00 am to 3:30 pm. <strong>Dinner is at 5:00 pm, and all 64 of us eat together</strong> in the same area of the dining room."],
     ["🎟️", "Boarding", "About 60 days out, the cruise line will ask for our boarding time. Boarding usually starts around 11:30 am, and everyone must be on board by 2:30 pm. Rooms typically open between 1:00 and 2:00 pm."],
