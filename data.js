@@ -82,30 +82,6 @@ window.CRUISE = {
     ["Ben & Melissa", "", "", 0, 1]
   ],
 
-  // [who, task, due, notes-in?]
-  tasks: [
-    ["Katie", "Talent show outline", "", false],
-    ["Mom", "Book a room on the ship and find out boarding times", "August", true],
-    ["Emily and Karen", "Find the hotel and transit to the port", "August", true],
-    ["Andrew", "Find a local church with a cultural hall", "", false],
-    ["Mom", "Meal times", "August", true],
-    ["Mom", "What the ship gives for room keys and required items", "August", true],
-    ["Mom", "Can all 64 of us eat at the same time and place?", "August", true],
-    ["Mom", "Schedule of ship activities and competitions", "August", true],
-    ["Mom", "Excursion options on port days", "August", true],
-    ["Courtenay", "What's available at CocoCay", "August", true],
-    ["Courtenay", "Excursion options in Nassau", "September", true],
-    ["Amanda", "Find lanyards or bracelets", "", false],
-    ["Eric", "Draft the punchcard activities and buddy list", "", false],
-    ["Unassigned", "Rewards for punchcards and extra prizes", "", false],
-    ["Amanda and Courtenay", "Shared photo album for after the cruise", "", false],
-    ["Everyone", "Think about slogans and mottos", "August", false],
-    ["Courtenay", "Music video", "", false],
-    ["Mom", "Gratuity protocols", "August", true],
-    ["Mom", "Paying for extras", "August", true],
-    ["Mom", "Activities aboard the ship", "August", true]
-  ],
-
   // [who, idea]
   ideas: [
     ["Mom", "Everyone stays at the same hotel Sunday night, with breakfast together Monday morning"],

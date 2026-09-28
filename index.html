@@ -131,17 +131,6 @@
   .missing { color: var(--coral); font-weight: 500; }
   .totals { margin-top: 1rem; color: var(--muted); font-size: .92rem; }
 
-  /* Tasks */
-  .progress { height: 12px; background: #fff; border-radius: 99px; overflow: hidden; margin: 0 0 1.25rem; box-shadow: inset 0 0 0 1px var(--line); }
-  .progress div { height: 100%; background: linear-gradient(90deg, var(--teal), var(--sky)); border-radius: 99px; }
-  .tasks { padding: .4rem 0; }
-  .task { display: grid; grid-template-columns: 1.8rem 1fr auto; gap: .6rem; align-items: center; padding: .75rem 1.2rem; border-top: 1px solid #F3ECE0; }
-  .task:first-child { border-top: 0; }
-  .task .check { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--line); display: grid; place-items: center; font-size: .75rem; color: #fff; }
-  .task.done .check { background: var(--teal); border-color: var(--teal); }
-  .task .who { font-size: .8rem; color: var(--muted); }
-  .task .due { font-size: .78rem; font-weight: 700; color: var(--muted); background: var(--sand); padding: .15rem .6rem; border-radius: 99px; white-space: nowrap; }
-
   /* Ideas */
   .ideas { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: .9rem; }
   .idea { padding: 1rem 1.1rem; border-radius: 16px; font-weight: 500; transform: rotate(var(--r)); transition: transform .2s; }
@@ -179,7 +168,6 @@
   <a href="#schedule">Schedule</a>
   <a href="#know">Good to know</a>
   <a href="#travel">Travel and hotel</a>
-  <a href="#tasks">Tasks</a>
   <a href="#ideas">Ideas</a>
 </div></nav>
 
@@ -205,12 +193,6 @@
     <div id="travelStatus"></div>
     <div class="families" id="families"></div>
     <p class="totals" id="totals"></p>
-  </section>
-
-  <section id="tasks">
-    <div class="head"><h2>Tasks</h2><p id="taskStatus"></p></div>
-    <div class="progress"><div id="bar"></div></div>
-    <div class="card tasks" id="taskList"></div>
   </section>
 
   <section id="ideas">
@@ -269,16 +251,6 @@
     `<div class="card fam"><h3>${esc(fam)} ${rooms(sat, sun)}</h3>${leg("🛬", arr)}${leg("🛫", dep)}</div>`).join("");
   const sum = i => D.travel.reduce((a, r) => a + (r[i] || 0), 0);
   $("totals").textContent = `Hotel rooms needed so far: ${sum(3)} on Saturday night and ${sum(4)} on Sunday night.`;
-
-  const done = D.tasks.filter(t => t[3]).length;
-  $("taskStatus").textContent = `${done} of ${D.tasks.length} have answers or notes so far.`;
-  $("bar").style.width = `${Math.round(100 * done / D.tasks.length)}%`;
-  $("taskList").innerHTML = D.tasks.map(([who, task, due, isDone]) => `
-    <div class="task${isDone ? " done" : ""}">
-      <div class="check">${isDone ? "✓" : ""}</div>
-      <div>${esc(task)}<div class="who">${esc(who)}</div></div>
-      ${due ? `<span class="due">${esc(due)}</span>` : "<span></span>"}
-    </div>`).join("");
 
   const notes = ["#FFF1DA", "#E3F6F4", "#FFE9E6", "#E6F0FF", "#F3EAFE"];
   $("ideaList").innerHTML = D.ideas.map(([who, idea], i) =>
