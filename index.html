@@ -387,6 +387,8 @@ const gdir = (from, to) => `https://www.google.com/maps/dir/?api=1&origin=${enco
 const mapLinks = (addr, extra = []) => `<span class="maplinks"><a href="${gmap(addr)}" target="_blank" rel="noopener">📍 Open in Maps</a>${
   [[D.hotel.address, addr, "🚗 Driving directions from the hotel"], ...extra].filter(([f, to]) => f !== to)
     .map(([f, to, label]) => `<a href="${gdir(f, to)}" target="_blank" rel="noopener">${label}</a>`).join("")}</span>`;
+// Plain text from the sheet: escape it, then turn **words** into bold.
+const bold = text => esc(text).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
 // Data text can say {{maps:ADDRESS}} to get map and directions links.
 const rich = html => html.replace(/\{\{maps:([^}]+)\}\}/g, (_, a) => mapLinks(a));
 const H = 36e5;
@@ -465,7 +467,8 @@ VIEWS.home = () => {
   <section><div class="head"><h2>The trip</h2><p>Everything booked so far.</p></div>
     <dl class="facts">${D.trip.facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl></section>
   <section><div class="head"><h2>Good to know</h2><p>What we've already found out.</p></div>
-    <div class="know">${D.goodToKnow.map(([ic, k, v]) => `<div class="card"><div class="icon">${ic}</div><h3>${esc(k)}</h3><p>${rich(v)}</p></div>`).join("")}</div></section>`;
+    <div class="know">${[...D.goodToKnow].sort((a, b) => a[0] - b[0]).map(([, ic, k, v, addr]) =>
+      `<div class="card"><div class="icon">${esc(ic)}</div><h3>${esc(k)}</h3><p>${bold(v)}</p>${addr ? mapLinks(addr) : ""}</div>`).join("")}</div></section>`;
 };
 
 /* ---------- Schedule (bar chart) ---------- */
