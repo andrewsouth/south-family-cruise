@@ -598,7 +598,7 @@ function drawRooms() {
   const list = D.rooms.filter(([n, res, ppl]) => (roomDeck === "all" || n.startsWith(roomDeck)) && (!q || n.includes(q) || res.includes(q) || ppl.some(p => p.toLowerCase().includes(q))))
     .sort((a, b) => a[0].localeCompare(b[0]));
   $("roomList").innerHTML = list.length ? `<div class="rooms-grid">${list.map(([n, res, ppl]) => `<div class="card room">
-      <div class="num">${esc(n)} <small>(${esc(res)})</small></div><div class="deck">Deck ${+n.slice(0, 2)}, ${ppl.length} ${ppl.length === 1 ? "person" : "people"}</div>
+      <div class="num">${esc(n)} <small>(Res # ${esc(res)})</small></div><div class="deck">Deck ${+n.slice(0, 2)}, ${ppl.length} ${ppl.length === 1 ? "person" : "people"}</div>
       <ul>${ppl.map(p => `<li class="${q && p.toLowerCase().includes(q) ? "hit" : ""}">${esc(p)}</li>`).join("")}</ul></div>`).join("")}</div>`
     : `<div class="card empty">No one matches "${esc(roomQ)}".</div>`;
 }
