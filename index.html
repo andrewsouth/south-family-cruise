@@ -213,13 +213,18 @@
   .empty { color: var(--muted); padding: 2rem; text-align: center; }
 
   /* Family numbers */
-  .jerseys { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: .8rem; }
-  .jersey { padding: 1rem .8rem .9rem; text-align: center; position: relative; overflow: hidden; }
-  .jersey::before { content: ""; position: absolute; inset: 0 0 auto; height: 6px; background: linear-gradient(90deg, var(--teal), var(--sky)); }
-  .jersey .no { font-family: var(--display); font-weight: 800; font-size: 2.6rem; line-height: 1; color: var(--sea); }
-  .jersey .nm { font-weight: 700; font-size: 1.05rem; margin-top: .35rem; }
-  .jersey .fm { font-size: .78rem; color: var(--muted); }
-  .jersey.hit { box-shadow: 0 0 0 3px var(--sun), 0 8px 28px rgba(28,43,54,.08); }
+  .jerseys { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem .8rem; }
+  .jersey { text-align: center; }
+  .shirt { position: relative; width: 100%; max-width: 170px; margin: 0 auto; aspect-ratio: 1 / 1; }
+  .shirt svg { position: absolute; inset: 0; width: 100%; height: 100%; filter: drop-shadow(0 6px 12px rgba(28,43,54,.12)); }
+  .shirt .body { fill: #fff; stroke: var(--line); stroke-width: 2; transition: fill .2s; }
+  .shirt .collar { fill: none; stroke: var(--teal); stroke-width: 5; stroke-linecap: round; }
+  .shirt .cuff { fill: none; stroke: var(--sky); stroke-width: 4; }
+  .shirt .txt { position: absolute; left: 24%; right: 24%; top: 27%; bottom: 10%; display: flex; flex-direction: column; align-items: center; }
+  .jersey .nm { font-family: var(--display); font-weight: 800; font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--sea); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  .jersey .no { font-family: var(--display); font-weight: 800; font-size: clamp(2.2rem, 7vw, 3rem); line-height: 1; color: var(--sea); margin-top: .1rem; }
+  .jersey .fm { font-size: .78rem; color: var(--muted); margin-top: .35rem; }
+  .jersey.hit .body { fill: #FFE7A8; }
   .famhead { font-family: var(--display); color: var(--sea); font-size: 1.2rem; margin: 1.4rem 0 .6rem; }
   .famhead:first-child { margin-top: 0; }
 
@@ -388,7 +393,7 @@ const PAGES = [
   { id: "schedule", name: "Schedule", icon: "🗓️" },
   { id: "travel", name: "Travel", icon: "✈️" },
   { id: "rooms", name: "Rooms", icon: "🛏️" },
-  { id: "numbers", name: "Family numbers", icon: "🔢" },
+  { id: "numbers", name: "Family numbers", icon: "👕" },
   { id: "onboard", name: "Free on board", icon: "🎢" },
   { id: "ports", name: "Ports", icon: "🏝️" },
   { id: "packing", name: "Packing", icon: "🧳" }
@@ -444,7 +449,7 @@ VIEWS.home = () => {
     ["schedule", "🗓️", "Schedule", "The whole week as a bar chart: pre-trip, on the water, and post-trip."],
     ["travel", "✈️", "Travel and hotel", `Flights, live tracking, and the hotel. ${missing.length ? `${missing.length} families still need to add plans.` : "Everyone's plans are in."}`],
     ["rooms", "🛏️", "Who's in which room", `${ppl} people in ${D.rooms.length} staterooms. Search for anyone.`],
-    ["numbers", "🔢", "Family numbers", `All ${D.familyNumbers.length} of us, numbered in the order we joined the family. It's the number on the back of your T-shirt.`],
+    ["numbers", "👕", "Family numbers", `All ${D.familyNumbers.length} of us, numbered in the order we joined the family. It's the number on the back of your T-shirt.`],
     ["onboard", "🎢", "Free on board", `${free} free things to do, see, and eat on the ship, plus buddy challenges.`],
     ["ports", "🏝️", "Nassau and CocoCay", "Each family's Nassau plans, and the CocoCay game plan."],
     ["packing", "🧳", "Packing", "What everyone gets, plus a packing list you can check off."]
@@ -646,6 +651,10 @@ AFTER.rooms = () => {
 
 /* ---------- Family numbers ---------- */
 let numQ = "", numBy = "number";
+const SHIRT_SVG = `<svg viewBox="0 0 200 200" aria-hidden="true">
+  <path class="body" d="M72 18 L38 30 L6 62 L30 92 L50 78 L50 188 L150 188 L150 78 L170 92 L194 62 L162 30 L128 18 Q100 40 72 18 Z"/>
+  <path class="collar" d="M74 20 Q100 42 126 20"/>
+  <path class="cuff" d="M10 66 L32 88 M190 66 L168 88"/></svg>`;
 VIEWS.numbers = () => `<section><div class="head"><h2>Family numbers</h2>
     <p>Randy is 1 and Karen is 2. After that, everyone is numbered in the order they joined the family: by birth, or by wedding day for those who married in. It's the number on the back of your T-shirt.</p></div>
     <div class="controls"><input class="search" id="numQ" placeholder="🔎 Find a name or number" value="${esc(numQ)}">
@@ -654,8 +663,9 @@ VIEWS.numbers = () => `<section><div class="head"><h2>Family numbers</h2>
     <div id="numList"></div></section>`;
 function drawNumbers() {
   const q = numQ.trim().toLowerCase();
-  const card = ([n, name, fam]) => `<div class="card jersey ${q && (name.toLowerCase().includes(q) || String(n) === q) ? "hit" : ""}">
-    <div class="no">${n}</div><div class="nm">${esc(name)}</div><div class="fm">${esc(fam)}</div></div>`;
+  const card = ([n, name, fam]) => `<div class="jersey ${q && (name.toLowerCase().includes(q) || String(n) === q) ? "hit" : ""}">
+    <div class="shirt">${SHIRT_SVG}<div class="txt"><div class="nm" style="${name.length > 7 ? "font-size:.64rem;letter-spacing:.03em" : ""}">${esc(name)}</div><div class="no">${n}</div></div></div>
+    <div class="fm">${esc(fam)}</div></div>`;
   const list = D.familyNumbers.filter(([n, name, fam]) => !q || name.toLowerCase().includes(q) || fam.toLowerCase().includes(q) || String(n) === q);
   if (!list.length) { $("numList").innerHTML = `<div class="card empty">No one matches "${esc(numQ)}".</div>`; return; }
   if (numBy === "number") { $("numList").innerHTML = `<div class="jerseys">${list.map(card).join("")}</div>`; return; }
