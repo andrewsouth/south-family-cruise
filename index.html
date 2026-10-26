@@ -600,7 +600,7 @@ function boardHtml(kind) {
   return `<div class="board"><table><tr><th>${kind === "arr" ? "Arrives" : "Departs"}</th><th>Family</th><th>Route</th><th>Flight</th><th>Live</th></tr>
     ${rows.map(({ f, l }) => `<tr><td class="when">${l.time ? fDayTime(l.time) : `${fDate(l.date)}, time ?`}</td><td class="who">${esc(f.family)}</td>
       <td>${l.mode === "drive" ? "Driving" : l.segments ? [l.segments[0][1], ...l.segments.map(g => g[3])].map(esc).join(" → ") : `${esc(l.from || "?")} → ${esc(l.to || "?")}`}</td>
-      <td>${l.mode === "drive" ? "" : (l.flight ? `${esc(l.airline)} ${esc(l.segments ? l.segments.map(g => g[0]).join(" + ") : l.flight)}` : `<span class="tbd">Needed</span>`)}</td>
+      <td>${l.mode === "drive" ? "" : (l.flight ? `${esc(l.airline)} ${esc(l.flight)}` : `<span class="tbd">Needed</span>`)}</td>
       <td>${l.flight ? `<a href="${trackUrl(l.flight)}" target="_blank" rel="noopener">Track</a>` : ""}</td></tr>`).join("")}
     ${none.map(n => `<tr><td class="when tbd">?</td><td class="who">${esc(n)}</td><td colspan="3" class="tbd">Plans not in yet</td></tr>`).join("")}
   </table></div>`;
