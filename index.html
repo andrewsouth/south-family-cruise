@@ -271,6 +271,14 @@
     .families { grid-template-columns: 1fr; }
   }
 </style>
+<script>
+  // Private traffic stats (GoatCounter dashboard: southcruise.goatcounter.com). Nothing shows on the page.
+  // Pages are counted by name because the site uses #/ routes; GoatCounter skips localhost on its own.
+  const gcQueue = [];
+  function gc(vars) { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count(vars); else gcQueue.push(vars); }
+  function gcReady() { while (gcQueue.length) window.goatcounter.count(gcQueue.shift()); }
+</script>
+<script data-goatcounter="https://southcruise.goatcounter.com/count" data-goatcounter-settings='{"no_onload": true}' async src="https://gc.zgo.at/count.js" onload="gcReady()"></script>
 </head>
 <body>
 
@@ -333,12 +341,13 @@ document.getElementById("lockForm").addEventListener("submit", async e => {
   const btn = document.getElementById("unlockBtn"), err = document.getElementById("lockErr");
   btn.textContent = "Checking..."; err.textContent = "";
   const ok = await tryUnlock(document.getElementById("pw").value, document.getElementById("remember").checked);
+  if (ok) gc({ path: "unlocked", title: "Got past the password", event: true });
   if (!ok) { err.textContent = "That's not it. Try again, or ask Andrew."; btn.textContent = "Come aboard"; }
 });
 
 (async () => {
   const saved = local.get(PW_KEY);
-  if (!(saved && await tryUnlock(saved, true))) { local.del(PW_KEY); document.getElementById("pw").focus(); }
+  if (!(saved && await tryUnlock(saved, true))) { local.del(PW_KEY); document.getElementById("pw").focus(); gc({ path: "lock-screen", title: "Password screen" }); }
 })();
 
 /* ---------- Helpers ---------- */
@@ -398,6 +407,7 @@ function route() {
     : `<h1>${page.icon} ${page.name}</h1><p class="sub">${esc(D.trip.title)}, Feb 15 to 19, 2027</p>`;
   tick();
   const key = page.id || "home";
+  gc({ path: key, title: page.name });
   $("view").innerHTML = `<div class="view">${VIEWS[key]()}</div>`;
   (AFTER[key] || (() => {}))();
   window.scrollTo({ top: 0 });
