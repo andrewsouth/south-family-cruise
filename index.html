@@ -201,6 +201,7 @@
   .rooms-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1rem; }
   .room { padding: 1.1rem 1.2rem; }
   .room .num { font-family: var(--display); font-weight: 800; font-size: 1.8rem; color: var(--sea); line-height: 1; }
+  .room .num small { font-family: "DM Sans", sans-serif; font-size: .8rem; font-weight: 500; color: var(--muted); }
   .room .deck { font-size: .8rem; color: var(--muted); font-weight: 500; }
   .room ul { list-style: none; margin: .7rem 0 0; padding: 0; }
   .room li { padding: .3rem 0; border-top: 1px dashed var(--line); font-size: .95rem; }
@@ -254,12 +255,6 @@
   .pack label.done span { text-decoration: line-through; color: var(--muted); }
   .pack .note { font-size: .88rem; color: var(--muted); font-style: italic; margin: 0 0 .2rem; }
   .linkbtn { border: 0; background: none; color: var(--teal); text-decoration: underline; padding: 0; font-weight: 500; }
-
-  /* Ideas */
-  .ideas { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: .9rem; }
-  .idea { padding: 1rem 1.1rem; border-radius: 16px; font-weight: 500; transform: rotate(var(--r)); transition: transform .2s; }
-  .idea:hover { transform: rotate(0) scale(1.03); }
-  .idea span { display: block; margin-top: .5rem; font-size: .8rem; font-weight: 700; opacity: .7; }
 
   footer { text-align: center; color: var(--muted); font-size: .9rem; padding: 4rem 16px 3rem; }
   footer .boat { font-size: 2rem; display: block; margin-bottom: .5rem; }
@@ -364,8 +359,7 @@ const PAGES = [
   { id: "rooms", name: "Rooms", icon: "🛏️" },
   { id: "onboard", name: "Free on board", icon: "🎢" },
   { id: "ports", name: "Ports", icon: "🏝️" },
-  { id: "packing", name: "Packing", icon: "🧳" },
-  { id: "ideas", name: "Ideas", icon: "💡" }
+  { id: "packing", name: "Packing", icon: "🧳" }
 ];
 
 function start(data) {
@@ -411,7 +405,7 @@ const VIEWS = {}, AFTER = {};
 /* ---------- Home ---------- */
 VIEWS.home = () => {
   const missing = famsMissing();
-  const ppl = D.rooms.reduce((a, r) => a + r[1].length, 0);
+  const ppl = D.rooms.reduce((a, r) => a + r[2].length, 0);
   const free = D.onboard.reduce((a, c) => a + c.items.length, 0);
   const tiles = [
     ["schedule", "🗓️", "Schedule", "The whole week as a bar chart: pre-trip, on the water, and post-trip."],
@@ -419,8 +413,7 @@ VIEWS.home = () => {
     ["rooms", "🛏️", "Who's in which room", `${ppl} people in ${D.rooms.length} staterooms. Search for anyone.`],
     ["onboard", "🎢", "Free on board", `${free} free things to do, see, and eat on the ship, plus buddy challenges.`],
     ["ports", "🏝️", "Nassau and CocoCay", "Each family's Nassau plans, and the CocoCay game plan."],
-    ["packing", "🧳", "Packing", "What everyone gets, plus a packing list you can check off."],
-    ["ideas", "💡", "Ideas board", "Everything from the family brainstorm."]
+    ["packing", "🧳", "Packing", "What everyone gets, plus a packing list you can check off."]
   ];
   return `
   <section><div class="tiles">${tiles.map(([id, ic, h, p]) => `<a class="card tile" href="#/${id}"><div class="icon">${ic}</div><h3>${h}</h3><p>${p}</p><span class="go">Open →</span></a>`).join("")}</div></section>
@@ -593,7 +586,7 @@ AFTER.travel = () => document.querySelectorAll("[data-tab]").forEach(b => b.oncl
 let roomQ = "", roomDeck = "all";
 VIEWS.rooms = () => {
   const decks = [...new Set(D.rooms.map(r => r[0].slice(0, 2)))].sort();
-  return `<section><div class="head"><h2>Who's in which room</h2><p>${D.rooms.reduce((a, r) => a + r[1].length, 0)} people in ${D.rooms.length} staterooms. The first two digits of a room number are the deck.</p></div>
+  return `<section><div class="head"><h2>Who's in which room</h2><p>${D.rooms.reduce((a, r) => a + r[2].length, 0)} people in ${D.rooms.length} staterooms. The first two digits of a room number are the deck.</p></div>
     <div class="controls"><input class="search" id="roomQ" placeholder="🔎 Find someone, like Hannah or Walker" value="${esc(roomQ)}">
       <button class="chip ${roomDeck === "all" ? "on" : ""}" data-deck="all">All decks</button>
       ${decks.map(d => `<button class="chip ${roomDeck === d ? "on" : ""}" data-deck="${d}">Deck ${+d}</button>`).join("")}</div>
@@ -602,10 +595,10 @@ VIEWS.rooms = () => {
 };
 function drawRooms() {
   const q = roomQ.trim().toLowerCase();
-  const list = D.rooms.filter(([n, ppl]) => (roomDeck === "all" || n.startsWith(roomDeck)) && (!q || n.includes(q) || ppl.some(p => p.toLowerCase().includes(q))))
+  const list = D.rooms.filter(([n, res, ppl]) => (roomDeck === "all" || n.startsWith(roomDeck)) && (!q || n.includes(q) || res.includes(q) || ppl.some(p => p.toLowerCase().includes(q))))
     .sort((a, b) => a[0].localeCompare(b[0]));
-  $("roomList").innerHTML = list.length ? `<div class="rooms-grid">${list.map(([n, ppl]) => `<div class="card room">
-      <div class="num">${esc(n)}</div><div class="deck">Deck ${+n.slice(0, 2)}, ${ppl.length} ${ppl.length === 1 ? "person" : "people"}</div>
+  $("roomList").innerHTML = list.length ? `<div class="rooms-grid">${list.map(([n, res, ppl]) => `<div class="card room">
+      <div class="num">${esc(n)} <small>(${esc(res)})</small></div><div class="deck">Deck ${+n.slice(0, 2)}, ${ppl.length} ${ppl.length === 1 ? "person" : "people"}</div>
       <ul>${ppl.map(p => `<li class="${q && p.toLowerCase().includes(q) ? "hit" : ""}">${esc(p)}</li>`).join("")}</ul></div>`).join("")}</div>`
     : `<div class="card empty">No one matches "${esc(roomQ)}".</div>`;
 }
@@ -694,13 +687,6 @@ AFTER.packing = () => {
     local.set(PACK_KEY, JSON.stringify([...done])); drawPack();
   });
   $("packReset").onclick = () => { local.del(PACK_KEY); drawPack(); };
-};
-
-/* ---------- Ideas ---------- */
-VIEWS.ideas = () => {
-  const notes = ["#FFF1DA", "#E3F6F4", "#FFE9E6", "#E6F0FF", "#F3EAFE"];
-  return `<section><div class="head"><h2>Ideas board</h2><p>From the family brainstorm. Nothing here is decided yet.</p></div>
-    <div class="ideas">${D.ideas.map(([who, idea], i) => `<div class="idea" style="background:${notes[i % 5]};--r:${[-1.2, .8, -.4, 1.1, -.8][i % 5]}deg">${esc(idea)}<span>${esc(who)}</span></div>`).join("")}</div></section>`;
 };
 </script>
 </body>
