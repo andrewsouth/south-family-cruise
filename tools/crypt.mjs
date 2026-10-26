@@ -12,7 +12,8 @@ const SRC = new URL("../private/data.js", import.meta.url);
 const OUT = new URL("../data.enc.json", import.meta.url);
 
 const mode = process.argv[2];
-const password = process.env.CRUISE_PASSWORD;
+// Passwords are case-insensitive: always normalized to trimmed lowercase.
+const password = process.env.CRUISE_PASSWORD?.trim().toLowerCase();
 if (!password || !["encrypt", "decrypt"].includes(mode)) {
   console.error("Usage: CRUISE_PASSWORD=... node tools/crypt.mjs encrypt|decrypt");
   process.exit(1);

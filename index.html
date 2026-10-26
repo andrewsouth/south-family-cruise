@@ -187,6 +187,9 @@
   .track { display: inline-flex; align-items: center; gap: .3rem; background: var(--sea); color: #fff; text-decoration: none; font-size: .78rem; font-weight: 700; padding: .2rem .7rem; border-radius: 99px; }
   .track:hover { background: var(--teal); }
   .missing { color: var(--coral); font-weight: 500; }
+  .maplinks { display: flex; flex-wrap: wrap; gap: .4rem; margin: .6rem 0 .2rem; }
+  .maplinks a { background: #E3F6F4; color: #0F5E55; text-decoration: none; font-size: .82rem; font-weight: 700; padding: .25rem .75rem; border-radius: 99px; }
+  .maplinks a:hover { background: var(--teal); color: #fff; }
   .board { background: #0E2433; color: #F5E9C8; border-radius: 20px; padding: .5rem 0; overflow-x: auto; font-variant-numeric: tabular-nums; }
   .board table { width: 100%; border-collapse: collapse; min-width: 600px; }
   .board th { text-align: left; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: #8FB3C7; padding: .6rem 1rem; font-weight: 700; }
@@ -308,6 +311,7 @@ const unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
 let encrypted = null;
 
 async function decrypt(password) {
+  password = password.trim().toLowerCase(); // case-insensitive, matches tools/crypt.mjs
   if (!encrypted) encrypted = await (await fetch("data.enc.json", { cache: "no-cache" })).json();
   const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveKey"]);
   const key = await crypto.subtle.deriveKey({ name: "PBKDF2", salt: unb64(encrypted.salt), iterations: encrypted.iter, hash: "SHA-256" },
@@ -347,6 +351,13 @@ const fTime = iso => fmt(iso, { hour: "numeric", minute: "2-digit" });
 const fDay = iso => fmt(iso, { weekday: "short", month: "short", day: "numeric" });
 const fDate = d => fDay(d + "T12:00:00-05:00");
 const t = iso => new Date(iso).getTime();
+const gmap = q => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
+const gdir = (from, to) => `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(from)}&destination=${encodeURIComponent(to)}&travelmode=driving`;
+const mapLinks = (addr, extra = []) => `<span class="maplinks"><a href="${gmap(addr)}" target="_blank" rel="noopener">📍 Open in Maps</a>${
+  [[D.hotel.address, addr, "🚗 Driving directions from the hotel"], ...extra].filter(([f, to]) => f !== to)
+    .map(([f, to, label]) => `<a href="${gdir(f, to)}" target="_blank" rel="noopener">${label}</a>`).join("")}</span>`;
+// Data text can say {{maps:ADDRESS}} to get map and directions links.
+const rich = html => html.replace(/\{\{maps:([^}]+)\}\}/g, (_, a) => mapLinks(a));
 const H = 36e5;
 const famsMissing = () => D.travel.filter(f => !f.arrive || !f.depart).map(f => f.family);
 const flightsNeeded = () => D.travel.filter(f => [f.arrive, f.depart].some(l => l && l.mode === "fly" && !l.flight)).length;
@@ -420,7 +431,7 @@ VIEWS.home = () => {
   <section><div class="head"><h2>The trip</h2><p>Everything booked so far.</p></div>
     <dl class="facts">${D.trip.facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl></section>
   <section><div class="head"><h2>Good to know</h2><p>What we've already found out.</p></div>
-    <div class="know">${D.goodToKnow.map(([ic, k, v]) => `<div class="card"><div class="icon">${ic}</div><h3>${esc(k)}</h3><p>${v}</p></div>`).join("")}</div></section>`;
+    <div class="know">${D.goodToKnow.map(([ic, k, v]) => `<div class="card"><div class="icon">${ic}</div><h3>${esc(k)}</h3><p>${rich(v)}</p></div>`).join("")}</div></section>`;
 };
 
 /* ---------- Schedule (bar chart) ---------- */
@@ -572,7 +583,7 @@ VIEWS.travel = () => {
     <div id="travelBody">${travelBody()}</div></section>
   <section><div class="head"><h2>The hotel</h2><p>Where we stay before (and for some, after) the cruise.</p></div>
     <div class="card hotel"><div class="big">🏨</div><div><h3>${esc(Hh.name)}</h3>
-      <div class="addr">${esc(Hh.address)}. <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(Hh.address)}" target="_blank" rel="noopener">Open in Maps</a></div>
+      <div class="addr">${esc(Hh.address)}</div>${mapLinks(Hh.address, [["Miami International Airport (MIA)", Hh.address, "✈️ Directions from the airport"], [Hh.address, "PortMiami, Miami, FL", "🚢 Directions to the cruise port"]])}
       <span class="pill gold">${esc(Hh.status)}</span><ul>${Hh.perks.map(p => `<li>${esc(p)}</li>`).join("")}</ul>
       <p class="totals">Rooms needed so far: <strong>${sum(0)}</strong> Saturday night, <strong>${sum(1)}</strong> Sunday night, and <strong>${sum(2)}</strong> Friday night after the cruise.</p></div></div></section>`;
 };
