@@ -22,124 +22,238 @@
     --line: #EDE3D3;
     --card: #FFFFFF;
     --display: "Bricolage Grotesque", Georgia, serif;
+    --pre: #F4A259;
+    --water: #2D9CDB;
+    --post: #8E7CC3;
   }
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body {
-    margin: 0;
-    background: var(--sand);
-    color: var(--ink);
-    font: 16px/1.6 "DM Sans", system-ui, sans-serif;
-  }
+  body { margin: 0; background: var(--sand); color: var(--ink); font: 16px/1.6 "DM Sans", system-ui, sans-serif; }
   a { color: var(--teal); font-weight: 500; }
   h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0; }
-  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+  button { font: inherit; cursor: pointer; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+  .hidden { display: none !important; }
+
+  /* Lock screen */
+  #lock { min-height: 100vh; display: grid; place-items: center; padding: 16px;
+    background: linear-gradient(180deg, #2D9CDB 0%, #56C1E0 45%, #1B998B 100%); }
+  #lock form { background: #fff; border-radius: 24px; padding: 2rem; width: 100%; max-width: 380px; text-align: center; box-shadow: 0 20px 60px rgba(11,57,84,.3); }
+  #lock .boat { font-size: 3rem; line-height: 1; }
+  #lock h1 { color: var(--sea); font-size: 1.8rem; margin: .6rem 0 .3rem; }
+  #lock p { color: var(--muted); margin: 0 0 1.2rem; }
+  #lock input[type=password] { width: 100%; font: inherit; padding: .8rem 1rem; border: 2px solid var(--line); border-radius: 12px; outline: none; }
+  #lock input[type=password]:focus { border-color: var(--teal); }
+  #lock button { width: 100%; margin-top: .8rem; padding: .8rem; border: 0; border-radius: 12px; background: var(--sea); color: #fff; font-weight: 700; }
+  #lock .err { color: var(--coral); font-weight: 500; min-height: 1.6em; margin: .6rem 0 0; }
+  #lock label { display: flex; gap: .5rem; align-items: center; justify-content: center; margin-top: .8rem; color: var(--muted); font-size: .9rem; }
 
   /* Hero */
-  .hero {
-    position: relative;
-    color: #fff;
-    background: linear-gradient(180deg, #2D9CDB 0%, #56C1E0 45%, #1B998B 100%);
-    padding: 1.25rem 0 7.5rem;
-    overflow: hidden;
-  }
-  .hero .sun {
-    position: absolute; right: 8%; top: 2.5rem;
-    width: 120px; height: 120px; border-radius: 50%;
-    background: radial-gradient(circle, #FFE08A 0%, var(--sun) 60%, rgba(255,200,87,0) 72%);
-    animation: glow 6s ease-in-out infinite;
-  }
+  .hero { position: relative; color: #fff; background: linear-gradient(180deg, #2D9CDB 0%, #56C1E0 45%, #1B998B 100%); overflow: hidden; }
+  .hero .inner { padding: 1rem 16px 6.5rem; position: relative; }
+  .hero.compact .inner { padding: .9rem 16px 4.2rem; }
+  .hero .sun { position: absolute; right: 8%; top: 2.2rem; width: 120px; height: 120px; border-radius: 50%;
+    background: radial-gradient(circle, #FFE08A 0%, var(--sun) 60%, rgba(255,200,87,0) 72%); animation: glow 6s ease-in-out infinite; }
+  .hero.compact .sun { width: 70px; height: 70px; top: 1rem; }
   @keyframes glow { 50% { transform: scale(1.08); } }
-  .hero .kicker {
-    display: inline-block; margin-top: 3rem;
-    background: rgba(255,255,255,.2); backdrop-filter: blur(4px);
-    padding: .3rem .9rem; border-radius: 99px; font-weight: 700; font-size: .9rem; letter-spacing: .02em;
-  }
-  .hero h1 { font-size: clamp(2.6rem, 8vw, 5.2rem); font-weight: 800; margin: .9rem 0 .5rem; max-width: 12ch; text-shadow: 0 2px 20px rgba(11,57,84,.25); }
-  .hero .sub { font-size: 1.2rem; margin: 0; opacity: .95; }
-  .countdown { display: flex; gap: .75rem; margin-top: 2rem; flex-wrap: wrap; }
-  .countdown div {
-    background: rgba(255,255,255,.95); color: var(--sea);
-    border-radius: 16px; padding: .7rem 1rem; min-width: 92px; text-align: center;
-    box-shadow: 0 8px 24px rgba(11,57,84,.18);
-  }
+  .kicker { display: inline-block; margin-top: 2.5rem; background: rgba(255,255,255,.2); padding: .3rem .9rem; border-radius: 99px; font-weight: 700; font-size: .9rem; }
+  .hero h1 { font-size: clamp(2.6rem, 8vw, 5rem); font-weight: 800; margin: .8rem 0 .4rem; max-width: 12ch; text-shadow: 0 2px 20px rgba(11,57,84,.25); }
+  .hero.compact h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); max-width: none; margin: 1.2rem 0 .2rem; }
+  .hero .sub { font-size: 1.15rem; margin: 0; opacity: .95; }
+  .countdown { display: flex; gap: .75rem; margin-top: 1.8rem; flex-wrap: wrap; }
+  .countdown div { background: rgba(255,255,255,.95); color: var(--sea); border-radius: 16px; padding: .7rem 1rem; min-width: 92px; text-align: center; box-shadow: 0 8px 24px rgba(11,57,84,.18); }
   .countdown b { display: block; font-family: var(--display); font-size: 2.2rem; font-weight: 800; line-height: 1; }
   .countdown span { font-size: .8rem; color: var(--muted); font-weight: 500; }
-  .countdown-label { margin-top: .75rem; font-weight: 500; opacity: .95; }
-  .waves { position: absolute; left: 0; bottom: -1px; width: 200%; height: 90px; animation: drift 18s linear infinite; }
-  .waves.back { opacity: .45; animation-duration: 28s; bottom: 12px; }
+  .countdown-label { margin-top: .7rem; font-weight: 500; }
+  .waves { position: absolute; left: 0; bottom: -1px; width: 200%; height: 80px; animation: drift 18s linear infinite; }
+  .waves.back { opacity: .45; animation-duration: 28s; bottom: 10px; }
   @keyframes drift { to { transform: translateX(-50%); } }
   @media (prefers-reduced-motion: reduce) { .waves, .hero .sun { animation: none; } }
 
   /* Nav */
-  nav { position: sticky; top: 0; z-index: 10; background: rgba(255,248,238,.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
-  nav .wrap { display: flex; gap: .4rem; overflow-x: auto; padding-top: .6rem; padding-bottom: .6rem; scrollbar-width: none; }
-  nav a { color: var(--sea); text-decoration: none; font-size: .9rem; padding: .35rem .8rem; border-radius: 99px; white-space: nowrap; }
+  nav { position: sticky; top: 0; z-index: 20; background: rgba(255,248,238,.94); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  nav .wrap { display: flex; gap: .35rem; overflow-x: auto; padding-top: .55rem; padding-bottom: .55rem; scrollbar-width: none; }
+  nav a { color: var(--sea); text-decoration: none; font-size: .92rem; padding: .4rem .85rem; border-radius: 99px; white-space: nowrap; }
   nav a:hover { background: #fff; }
+  nav a.active { background: var(--sea); color: #fff; }
 
-  section { padding: 3.5rem 0 1rem; scroll-margin-top: 50px; }
-  .head { margin-bottom: 1.5rem; }
-  .head h2 { font-size: clamp(1.8rem, 4vw, 2.4rem); color: var(--sea); font-weight: 800; }
-  .head p { color: var(--muted); margin: .4rem 0 0; }
+  main { min-height: 50vh; }
+  section { padding: 2.5rem 0 .5rem; }
+  .head { margin-bottom: 1.25rem; }
+  .head h2 { font-size: clamp(1.7rem, 4vw, 2.3rem); color: var(--sea); font-weight: 800; }
+  .head p { color: var(--muted); margin: .35rem 0 0; }
   .card { background: var(--card); border-radius: 20px; box-shadow: 0 1px 2px rgba(28,43,54,.05), 0 8px 28px rgba(28,43,54,.06); }
+  .view { animation: fadein .25s ease; }
+  @keyframes fadein { from { opacity: 0; transform: translateY(6px); } }
 
-  /* Facts */
+  /* Chips and inputs */
+  .controls { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin-bottom: 1rem; }
+  .chip { border: 1.5px solid var(--line); background: #fff; color: var(--sea); padding: .35rem .85rem; border-radius: 99px; font-size: .9rem; font-weight: 500; }
+  .chip:hover { border-color: var(--teal); }
+  .chip.on { background: var(--sea); border-color: var(--sea); color: #fff; }
+  .search { flex: 1; min-width: 200px; font: inherit; padding: .55rem 1rem; border: 1.5px solid var(--line); border-radius: 99px; outline: none; background: #fff; }
+  .search:focus { border-color: var(--teal); }
+  .pill { display: inline-block; font-size: .75rem; font-weight: 700; padding: .12rem .6rem; border-radius: 99px; background: #E3F6F4; color: #0F5E55; white-space: nowrap; }
+  .pill.warn { background: #FFE9E6; color: #8A2A1F; white-space: normal; }
+  .pill.gold { background: #FFF1DA; color: #9A5B00; white-space: normal; }
+
+  /* Home */
+  .tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1rem; }
+  .tile { display: block; padding: 1.2rem; text-decoration: none; color: inherit; transition: transform .2s, box-shadow .2s; }
+  .tile:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(28,43,54,.12); }
+  .tile .icon { font-size: 2rem; line-height: 1; }
+  .tile h3 { color: var(--sea); font-size: 1.25rem; margin: .6rem 0 .2rem; }
+  .tile p { margin: 0; color: var(--muted); font-size: .92rem; }
+  .tile .go { color: var(--teal); font-weight: 700; font-size: .9rem; margin-top: .6rem; display: block; }
   .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); background: #fff; border-radius: 20px; overflow: hidden; margin: 0; box-shadow: 0 8px 28px rgba(28,43,54,.06); }
   .facts div { padding: 1.1rem 1.3rem; box-shadow: 0 1px 0 var(--line), 1px 0 0 var(--line); }
   .facts dt { color: var(--muted); font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; }
   .facts dd { margin: .15rem 0 0; font-weight: 700; font-size: 1.05rem; color: var(--sea); }
-
-  /* Days */
-  .days { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1rem; }
-  .day { padding: 1.2rem; position: relative; transition: transform .2s; }
-  .day:hover { transform: translateY(-3px); }
-  .day .icon { font-size: 2rem; line-height: 1; }
-  .day .date { color: var(--muted); font-size: .85rem; font-weight: 500; margin-top: .6rem; }
-  .day h3 { font-size: 1.3rem; color: var(--sea); margin: .15rem 0 .3rem; }
-  .day .note { color: var(--muted); font-size: .92rem; margin: 0; }
-  .day.ship { background: linear-gradient(160deg, #fff 55%, #E3F6F4 100%); }
-  .day.ship::after {
-    content: "On the ship"; position: absolute; top: 1rem; right: 1rem;
-    font-size: .72rem; font-weight: 700; color: var(--teal); background: #E3F6F4; padding: .15rem .55rem; border-radius: 99px;
-  }
-  .day ul { list-style: none; margin: .8rem 0 0; padding: 0; }
-  .day li { font-size: .92rem; padding: .45rem 0; border-top: 1px dashed var(--line); }
-  .day li i { color: var(--coral); font-style: normal; font-size: .78rem; font-weight: 700; display: block; }
-
-  /* Good to know */
   .know { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1rem; }
   .know .card { padding: 1.3rem; }
   .know .icon { width: 44px; height: 44px; border-radius: 12px; background: #FFF1DA; display: grid; place-items: center; font-size: 1.4rem; margin-bottom: .75rem; }
   .know h3 { font-size: 1.15rem; color: var(--sea); margin-bottom: .35rem; }
   .know p { margin: 0; font-size: .95rem; }
 
-  /* Hotel + travel */
-  .hotel { padding: 1.5rem; display: grid; grid-template-columns: auto 1fr; gap: 1.2rem; align-items: start; margin-bottom: 1.5rem; }
+  /* Gantt */
+  .phase-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem; margin-bottom: 1.25rem; }
+  .phase-card { padding: 1rem 1.2rem; border: 0; border-left: 6px solid; text-align: left; color: inherit; }
+  .phase-card h3 { font-size: 1.15rem; color: var(--sea); }
+  .phase-card p { margin: .25rem 0 0; font-size: .88rem; color: var(--muted); }
+  .phase-card.on { outline: 3px solid var(--sea); outline-offset: -3px; }
+  .gantt { overflow-x: auto; padding: .5rem 0 1rem; -webkit-overflow-scrolling: touch; }
+  .g-row { display: flex; min-height: 34px; }
+  .g-label { position: sticky; left: 0; z-index: 3; flex: 0 0 150px; background: #fff; padding: .35rem .8rem; font-size: .84rem; font-weight: 700; color: var(--sea); display: flex; align-items: center; border-right: 1px solid var(--line); }
+  .g-track { position: relative; flex: 0 0 auto; border-bottom: 1px dashed #F3ECE0; }
+  .g-group .g-label { color: var(--muted); font-size: .72rem; text-transform: uppercase; letter-spacing: .07em; }
+  .g-group .g-track { border-bottom: 0; }
+  .g-days .g-track { height: 40px; border-bottom: 1px solid var(--line); }
+  .g-day { position: absolute; top: 0; height: 100%; padding: .3rem .45rem; font-size: .75rem; color: var(--muted); white-space: nowrap; overflow: hidden; }
+  .g-day b { display: block; color: var(--sea); font-size: .82rem; }
+  .g-grid { position: absolute; top: 0; bottom: 0; border-left: 1px solid #EFE6D6; pointer-events: none; }
+  .g-night { position: absolute; top: 0; bottom: 0; background: rgba(11,57,84,.04); pointer-events: none; }
+  .g-phase { position: absolute; top: 5px; bottom: 5px; border-radius: 8px; color: #fff; font-weight: 700; font-size: .8rem; padding: 0 .6rem; display: flex; align-items: center; overflow: hidden; white-space: nowrap; border: 0; }
+  .bar { position: absolute; top: 5px; height: 24px; border-radius: 7px; border: 0; padding: 0 .5rem; font-size: .76rem; font-weight: 700; color: #fff; display: flex; align-items: center; overflow: hidden; white-space: nowrap; min-width: 6px; transition: filter .15s, transform .15s; }
+  .bar:hover, .bar.sel { filter: brightness(1.1); transform: scaleY(1.12); z-index: 2; }
+  .bar.sel { box-shadow: 0 0 0 2px var(--sea); }
+  .bar.ship { background: var(--water); }
+  .bar.port { background: var(--teal); }
+  .bar.group { background: var(--coral); }
+  .bar.meal { background: var(--pre); }
+  .bar.hotel { background: var(--post); }
+  .bar.fam { background: linear-gradient(90deg, var(--sea), #1F6F8B); }
+  .bar.fam.drive { background: linear-gradient(90deg, #5B7553, #8DAA80); }
+  .bar .fade-l, .bar .fade-r { position: absolute; top: 0; bottom: 0; width: 26px; }
+  .bar .fade-l { left: 0; background: linear-gradient(90deg, #fff, transparent); }
+  .bar .fade-r { right: 0; background: linear-gradient(270deg, #fff, transparent); }
+  .g-unknown { position: absolute; top: 7px; font-size: .8rem; color: var(--coral); font-weight: 500; white-space: nowrap; }
+  .g-wrap { padding: .4rem 0; overflow: hidden; }
+  .detail { margin-top: 1rem; padding: 1rem 1.2rem; display: flex; gap: 1rem; align-items: flex-start; }
+  .detail .dot { width: 14px; height: 14px; border-radius: 50%; margin-top: .3rem; flex: 0 0 auto; }
+  .detail h3 { color: var(--sea); font-size: 1.15rem; }
+  .detail .when { color: var(--muted); font-size: .9rem; font-weight: 500; }
+  .detail p { margin: .3rem 0 0; }
+  .legend { display: flex; flex-wrap: wrap; gap: .4rem .9rem; margin-top: .9rem; font-size: .82rem; color: var(--muted); }
+  .legend span::before { content: ""; display: inline-block; width: 12px; height: 12px; border-radius: 4px; margin-right: .35rem; vertical-align: -1px; background: var(--c); }
+  .days { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1rem; }
+  .day { padding: 1.2rem; position: relative; border-top: 5px solid var(--c); }
+  .day .icon { font-size: 1.8rem; line-height: 1; }
+  .day .date { color: var(--muted); font-size: .85rem; font-weight: 500; margin-top: .5rem; }
+  .day h3 { font-size: 1.25rem; color: var(--sea); margin: .15rem 0 .3rem; }
+  .day .note { color: var(--muted); font-size: .92rem; margin: 0; }
+  .day .tag { position: absolute; top: 1rem; right: 1rem; }
+  .day ul { list-style: none; margin: .8rem 0 0; padding: 0; }
+  .day li { font-size: .92rem; padding: .45rem 0; border-top: 1px dashed var(--line); }
+  .day li i { color: var(--coral); font-style: normal; font-size: .78rem; font-weight: 700; display: block; }
+
+  /* Travel */
+  .hotel { padding: 1.5rem; display: grid; grid-template-columns: auto 1fr; gap: 1.2rem; align-items: start; }
   .hotel .big { font-size: 2.6rem; line-height: 1; }
   .hotel h3 { font-size: 1.35rem; color: var(--sea); }
-  .hotel .status { display: inline-block; margin: .4rem 0 .6rem; font-size: .85rem; font-weight: 700; background: #FFF1DA; color: #9A5B00; padding: .2rem .7rem; border-radius: 99px; }
-  .hotel ul { margin: 0; padding-left: 1.1rem; }
-  .hotel li { margin: .2rem 0; }
-
-  .alert { display: flex; gap: .75rem; align-items: center; background: #FFE9E6; color: #8A2A1F; border-radius: 14px; padding: .85rem 1.1rem; margin-bottom: 1rem; }
-  .alert.ok { background: #E3F6F4; color: #0F5E55; }
-  .families { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
-  .fam { padding: 1.1rem 1.2rem; }
-  .fam h3 { font-size: 1.1rem; color: var(--sea); display: flex; justify-content: space-between; gap: .5rem; align-items: baseline; }
-  .fam .rooms { font-family: "DM Sans", sans-serif; font-size: .78rem; color: var(--muted); font-weight: 500; white-space: nowrap; }
-  .leg { display: grid; grid-template-columns: 1.6rem 1fr; font-size: .92rem; margin-top: .45rem; }
-  .missing { color: var(--coral); font-weight: 500; }
-  .totals { margin-top: 1rem; color: var(--muted); font-size: .92rem; }
   .hotel .addr { color: var(--muted); font-size: .95rem; margin-top: .2rem; }
+  .hotel .pill { margin: .5rem 0 .6rem; }
+  .hotel ul { margin: 0; padding-left: 1.1rem; }
+  .alert { display: flex; gap: .75rem; align-items: center; background: #FFE9E6; color: #8A2A1F; border-radius: 14px; padding: .85rem 1.1rem; margin-bottom: 1rem; }
+  .alert.info { background: #E6F0FF; color: #1D3F7A; }
+  .families { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; }
+  .fam { padding: 1.1rem 1.2rem; }
+  .fam h3 { font-size: 1.15rem; color: var(--sea); }
+  .fam .rooms { font-size: .78rem; color: var(--muted); font-weight: 500; margin-top: .2rem; }
+  .leg { display: grid; grid-template-columns: 2rem 1fr; gap: .2rem; padding: .7rem 0 .2rem; border-top: 1px dashed var(--line); margin-top: .6rem; }
+  .leg .ic { font-size: 1.2rem; }
+  .leg .k { font-size: .72rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); font-weight: 700; }
+  .leg .route { font-weight: 700; color: var(--sea); }
+  .leg .time { font-size: .95rem; }
+  .leg .meta { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; margin-top: .3rem; }
+  .track { display: inline-flex; align-items: center; gap: .3rem; background: var(--sea); color: #fff; text-decoration: none; font-size: .78rem; font-weight: 700; padding: .2rem .7rem; border-radius: 99px; }
+  .track:hover { background: var(--teal); }
+  .missing { color: var(--coral); font-weight: 500; }
+  .board { background: #0E2433; color: #F5E9C8; border-radius: 20px; padding: .5rem 0; overflow-x: auto; font-variant-numeric: tabular-nums; }
+  .board table { width: 100%; border-collapse: collapse; min-width: 600px; }
+  .board th { text-align: left; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: #8FB3C7; padding: .6rem 1rem; font-weight: 700; }
+  .board td { padding: .65rem 1rem; border-top: 1px solid rgba(255,255,255,.08); font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88rem; }
+  .board td.when { color: var(--sun); font-weight: 700; white-space: nowrap; }
+  .board td.who { font-family: "DM Sans", sans-serif; font-weight: 700; color: #fff; white-space: nowrap; }
+  .board a { color: var(--sky); }
+  .board .tbd { color: #FF9B8F; }
+  .totals { margin-top: 1rem; color: var(--muted); font-size: .92rem; }
 
-  /* Nassau */
+  /* Rooms */
+  .rooms-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1rem; }
+  .room { padding: 1.1rem 1.2rem; }
+  .room .num { font-family: var(--display); font-weight: 800; font-size: 1.8rem; color: var(--sea); line-height: 1; }
+  .room .deck { font-size: .8rem; color: var(--muted); font-weight: 500; }
+  .room ul { list-style: none; margin: .7rem 0 0; padding: 0; }
+  .room li { padding: .3rem 0; border-top: 1px dashed var(--line); font-size: .95rem; }
+  .room li:first-child { border-top: 0; }
+  .room li.hit { background: #FFF1DA; margin: 0 -.5rem; padding-left: .5rem; padding-right: .5rem; border-radius: 6px; font-weight: 700; }
+  .empty { color: var(--muted); padding: 2rem; text-align: center; }
+
+  /* On board */
+  .acts { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+  .act { padding: 1.1rem 1.2rem; position: relative; }
+  .act h3 { color: var(--sea); font-size: 1.1rem; padding-right: 2.2rem; }
+  .act p { margin: .35rem 0 .6rem; font-size: .93rem; }
+  .act .cat { font-size: .78rem; color: var(--muted); font-weight: 500; margin-left: .4rem; }
+  .star { position: absolute; top: .8rem; right: .8rem; border: 0; background: none; font-size: 1.3rem; line-height: 1; padding: .2rem; filter: grayscale(1) opacity(.45); transition: transform .15s; }
+  .star.on { filter: none; }
+  .star:hover { transform: scale(1.2); }
+  .buddies { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .buddies span { background: #fff; border: 1.5px dashed var(--teal); color: var(--sea); border-radius: 12px; padding: .45rem .8rem; font-size: .92rem; font-weight: 500; }
+  .extra { padding: 1.1rem 1.3rem; }
+  .extra ul { margin: .4rem 0 0; padding-left: 1.2rem; }
+
+  /* Ports */
+  .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
   .plans { padding: .4rem 0; }
   .plan { display: flex; justify-content: space-between; gap: 1rem; padding: .7rem 1.2rem; border-top: 1px solid #F3ECE0; }
   .plan:first-child { border-top: 0; }
-  .plan b { color: var(--sea); }
+  .plan b { color: var(--sea); white-space: nowrap; }
+  .plan span { text-align: right; }
   .plan .tbd { color: var(--coral); font-weight: 500; }
-  .chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; align-items: center; }
-  .chip { background: #E3F6F4; color: #0F5E55; font-weight: 500; font-size: .9rem; padding: .3rem .8rem; border-radius: 99px; }
+  .tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; align-items: center; }
+  .infocard { padding: 1.3rem; }
+  .infocard h3 { color: var(--sea); font-size: 1.3rem; margin-bottom: .5rem; }
+  .infocard ul { margin: 0; padding-left: 1.2rem; }
+  .infocard li { margin: .35rem 0; }
+
+  /* Packing */
+  .provided { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+  .gift { padding: 1.1rem 1.2rem; text-align: center; }
+  .gift .ic { font-size: 2.2rem; line-height: 1; }
+  .gift h3 { color: var(--sea); font-size: 1.1rem; margin: .5rem 0 .25rem; }
+  .gift p { margin: 0; font-size: .88rem; color: var(--muted); }
+  .progress { height: 12px; background: #fff; border-radius: 99px; overflow: hidden; box-shadow: inset 0 0 0 1px var(--line); flex: 1; min-width: 160px; }
+  .progress div { height: 100%; background: linear-gradient(90deg, var(--teal), var(--sky)); border-radius: 99px; transition: width .3s; }
+  .pack { columns: 2 340px; column-gap: 1rem; }
+  .pack .card { break-inside: avoid; padding: 1.1rem 1.2rem; margin-bottom: 1rem; display: inline-block; width: 100%; }
+  .pack h3 { color: var(--sea); font-size: 1.15rem; margin-bottom: .4rem; display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; }
+  .pack h3 small { font-family: "DM Sans", sans-serif; font-size: .78rem; color: var(--muted); font-weight: 500; }
+  .pack label { display: flex; gap: .65rem; align-items: flex-start; padding: .4rem 0; border-top: 1px dashed var(--line); cursor: pointer; font-size: .94rem; }
+  .pack label:first-of-type { border-top: 0; }
+  .pack input { width: 18px; height: 18px; margin-top: .15rem; accent-color: var(--teal); flex: 0 0 auto; }
+  .pack label.done span { text-decoration: line-through; color: var(--muted); }
+  .pack .note { font-size: .88rem; color: var(--muted); font-style: italic; margin: 0 0 .2rem; }
+  .linkbtn { border: 0; background: none; color: var(--teal); text-decoration: underline; padding: 0; font-weight: 500; }
 
   /* Ideas */
   .ideas { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: .9rem; }
@@ -147,7 +261,7 @@
   .idea:hover { transform: rotate(0) scale(1.03); }
   .idea span { display: block; margin-top: .5rem; font-size: .8rem; font-weight: 700; opacity: .7; }
 
-  footer { text-align: center; color: var(--muted); font-size: .9rem; padding: 4rem 0 3rem; }
+  footer { text-align: center; color: var(--muted); font-size: .9rem; padding: 4rem 16px 3rem; }
   footer .boat { font-size: 2rem; display: block; margin-bottom: .5rem; }
 
   @media (max-width: 600px) {
@@ -155,129 +269,439 @@
     .countdown div { min-width: 0; flex: 1; padding: .6rem .5rem; }
     .countdown b { font-size: 1.7rem; }
     .hotel { grid-template-columns: 1fr; }
+    .g-label { font-size: .76rem; padding: .3rem .5rem; }
+    .families { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 
-<div class="hero">
-  <div class="sun"></div>
-  <div class="wrap">
-    <span class="kicker" id="kicker"></span>
-    <h1 id="title"></h1>
-    <p class="sub" id="subtitle"></p>
-    <div class="countdown" id="countdown"></div>
-    <div class="countdown-label">until we set sail from Miami</div>
-  </div>
-  <svg class="waves back" viewBox="0 0 2880 90" preserveAspectRatio="none" aria-hidden="true"><path fill="#FFF8EE" d="M0 45 Q180 5 360 45 T720 45 T1080 45 T1440 45 T1800 45 T2160 45 T2520 45 T2880 45 V90 H0Z"/></svg>
-  <svg class="waves" viewBox="0 0 2880 90" preserveAspectRatio="none" aria-hidden="true"><path fill="#FFF8EE" d="M0 55 Q240 20 480 55 T960 55 T1440 55 T1920 55 T2400 55 T2880 55 V90 H0Z"/></svg>
+<div id="lock">
+  <form id="lockForm" autocomplete="off">
+    <div class="boat">🚢</div>
+    <h1>South Family Cruise</h1>
+    <p>This site is just for the family. Enter the family password to come aboard.</p>
+    <input id="pw" type="password" placeholder="Family password" aria-label="Family password" autocomplete="current-password">
+    <label><input id="remember" type="checkbox" checked> Remember me on this device</label>
+    <button type="submit" id="unlockBtn">Come aboard</button>
+    <p class="err" id="lockErr"></p>
+  </form>
 </div>
 
-<nav><div class="wrap">
-  <a href="#trip">The trip</a>
-  <a href="#schedule">Schedule</a>
-  <a href="#know">Good to know</a>
-  <a href="#travel">Travel and hotel</a>
-  <a href="#nassau">Nassau plans</a>
-  <a href="#ideas">Ideas</a>
-</div></nav>
+<div id="app" class="hidden">
+  <div class="hero" id="hero">
+    <div class="sun"></div>
+    <div class="wrap inner" id="heroInner"></div>
+    <svg class="waves back" viewBox="0 0 2880 80" preserveAspectRatio="none" aria-hidden="true"><path fill="#FFF8EE" d="M0 40 Q180 5 360 40 T720 40 T1080 40 T1440 40 T1800 40 T2160 40 T2520 40 T2880 40 V80 H0Z"/></svg>
+    <svg class="waves" viewBox="0 0 2880 80" preserveAspectRatio="none" aria-hidden="true"><path fill="#FFF8EE" d="M0 50 Q240 18 480 50 T960 50 T1440 50 T1920 50 T2400 50 T2880 50 V80 H0Z"/></svg>
+  </div>
+  <nav><div class="wrap" id="nav"></div></nav>
+  <main class="wrap" id="view"></main>
+  <footer id="footer"></footer>
+</div>
 
-<main class="wrap">
-  <section id="trip">
-    <div class="head"><h2>The trip</h2><p>Everything booked so far.</p></div>
-    <dl class="facts" id="facts"></dl>
-  </section>
-
-  <section id="schedule">
-    <div class="head"><h2>The week</h2><p>Eight days, four nights at sea, one big family.</p></div>
-    <div class="days" id="days"></div>
-  </section>
-
-  <section id="know">
-    <div class="head"><h2>Good to know</h2><p>What we've already found out.</p></div>
-    <div class="know" id="goodToKnow"></div>
-  </section>
-
-  <section id="travel">
-    <div class="head"><h2>Travel and hotel</h2><p>Who's arriving when, and where we're staying before we sail.</p></div>
-    <div class="card hotel" id="hotel"></div>
-    <div id="travelStatus"></div>
-    <div class="families" id="families"></div>
-    <p class="totals" id="totals"></p>
-  </section>
-
-  <section id="nassau">
-    <div class="head"><h2>Nassau plans</h2><p>What each family is thinking for Tuesday in port (8:00 am to 5:00 pm).</p></div>
-    <div class="card plans" id="nassauList"></div>
-    <div class="chips" id="nassauIdeas"></div>
-  </section>
-
-  <section id="ideas">
-    <div class="head"><h2>Ideas board</h2><p>From the family brainstorm. Nothing here is decided yet.</p></div>
-    <div class="ideas" id="ideaList"></div>
-  </section>
-</main>
-
-<footer class="wrap" id="footer"></footer>
-
-<script src="data.js"></script>
 <script>
-  const D = window.CRUISE;
-  const $ = id => document.getElementById(id);
-  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+/* ---------- Unlock ---------- */
+const PW_KEY = "south-cruise-pw";
+const local = {
+  get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch {} },
+  del(k) { try { localStorage.removeItem(k); } catch {} },
+  json(k) { try { return JSON.parse(localStorage.getItem(k) || "null"); } catch { return null; } }
+};
+const unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+let encrypted = null;
 
-  $("kicker").textContent = "🎉 Feb 15 to 19, 2027";
-  $("title").textContent = D.trip.title;
-  $("subtitle").textContent = D.trip.subtitle;
+async function decrypt(password) {
+  if (!encrypted) encrypted = await (await fetch("data.enc.json", { cache: "no-cache" })).json();
+  const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveKey"]);
+  const key = await crypto.subtle.deriveKey({ name: "PBKDF2", salt: unb64(encrypted.salt), iterations: encrypted.iter, hash: "SHA-256" },
+    base, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+  const pt = await crypto.subtle.decrypt({ name: "AES-GCM", iv: unb64(encrypted.iv) }, key, unb64(encrypted.ct));
+  return JSON.parse(new TextDecoder().decode(pt)).data;
+}
 
-  function tick() {
-    const ms = new Date(D.trip.departs) - new Date();
-    if (ms <= 0) { $("countdown").innerHTML = "<div><b>Bon voyage!</b></div>"; return; }
-    const parts = [[Math.floor(ms / 864e5), "days"], [Math.floor(ms / 36e5) % 24, "hours"], [Math.floor(ms / 6e4) % 60, "minutes"]];
-    $("countdown").innerHTML = parts.map(([n, l]) => `<div><b>${n}</b><span>${l}</span></div>`).join("");
+async function tryUnlock(password, remember) {
+  let data;
+  try { data = await decrypt(password); } catch { return false; }
+  if (remember) local.set(PW_KEY, password);
+  start(data);
+  return true;
+}
+
+document.getElementById("lockForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const btn = document.getElementById("unlockBtn"), err = document.getElementById("lockErr");
+  btn.textContent = "Checking..."; err.textContent = "";
+  const ok = await tryUnlock(document.getElementById("pw").value, document.getElementById("remember").checked);
+  if (!ok) { err.textContent = "That's not it. Try again, or ask Andrew."; btn.textContent = "Come aboard"; }
+});
+
+(async () => {
+  const saved = local.get(PW_KEY);
+  if (!(saved && await tryUnlock(saved, true))) { local.del(PW_KEY); document.getElementById("pw").focus(); }
+})();
+
+/* ---------- Helpers ---------- */
+let D;
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const fmt = (iso, opts) => new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", ...opts }).format(new Date(iso));
+const fDayTime = iso => fmt(iso, { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+const fTime = iso => fmt(iso, { hour: "numeric", minute: "2-digit" });
+const fDay = iso => fmt(iso, { weekday: "short", month: "short", day: "numeric" });
+const fDate = d => fDay(d + "T12:00:00-05:00");
+const t = iso => new Date(iso).getTime();
+const H = 36e5;
+const famsMissing = () => D.travel.filter(f => !f.arrive || !f.depart).map(f => f.family);
+const flightsNeeded = () => D.travel.filter(f => [f.arrive, f.depart].some(l => l && l.mode === "fly" && !l.flight)).length;
+
+/* ---------- Pages ---------- */
+const PAGES = [
+  { id: "", name: "Home", icon: "🏠" },
+  { id: "schedule", name: "Schedule", icon: "🗓️" },
+  { id: "travel", name: "Travel", icon: "✈️" },
+  { id: "rooms", name: "Rooms", icon: "🛏️" },
+  { id: "onboard", name: "Free on board", icon: "🎢" },
+  { id: "ports", name: "Ports", icon: "🏝️" },
+  { id: "packing", name: "Packing", icon: "🧳" },
+  { id: "ideas", name: "Ideas", icon: "💡" }
+];
+
+function start(data) {
+  D = data;
+  $("lock").classList.add("hidden");
+  $("app").classList.remove("hidden");
+  $("footer").innerHTML = `<span class="boat">🚢</span>Pulled from the family planning sheet on ${esc(D.updated)}.<br>
+    Add or change things in the sheet, and this site gets updated from it.<br><br><button class="linkbtn" id="lockBtn">Lock the site on this device</button>`;
+  $("lockBtn").onclick = () => { local.del(PW_KEY); location.reload(); };
+  window.addEventListener("hashchange", route);
+  window.addEventListener("resize", () => { if (location.hash.startsWith("#/schedule")) drawGantt(); });
+  route();
+  setInterval(tick, 30000);
+}
+
+function route() {
+  const id = location.hash.replace(/^#\/?/, "");
+  const page = PAGES.find(p => p.id === id) || PAGES[0];
+  $("nav").innerHTML = PAGES.map(p => `<a href="#/${p.id}" class="${p === page ? "active" : ""}">${p.icon} ${p.name}</a>`).join("");
+  const home = page.id === "";
+  $("hero").classList.toggle("compact", !home);
+  $("heroInner").innerHTML = home
+    ? `<span class="kicker">🎉 Feb 15 to 19, 2027</span><h1>${esc(D.trip.title)}</h1><p class="sub">${esc(D.trip.subtitle)}</p>
+       <div class="countdown" id="countdown"></div><div class="countdown-label">until we set sail from Miami</div>`
+    : `<h1>${page.icon} ${page.name}</h1><p class="sub">${esc(D.trip.title)}, Feb 15 to 19, 2027</p>`;
+  tick();
+  const key = page.id || "home";
+  $("view").innerHTML = `<div class="view">${VIEWS[key]()}</div>`;
+  (AFTER[key] || (() => {}))();
+  window.scrollTo({ top: 0 });
+}
+
+function tick() {
+  const el = $("countdown"); if (!el || !D) return;
+  const ms = t(D.trip.departs) - Date.now();
+  if (ms <= 0) { el.innerHTML = "<div><b>Bon voyage!</b></div>"; return; }
+  el.innerHTML = [[Math.floor(ms / 864e5), "days"], [Math.floor(ms / H) % 24, "hours"], [Math.floor(ms / 6e4) % 60, "minutes"]]
+    .map(([n, l]) => `<div><b>${n}</b><span>${l}</span></div>`).join("");
+}
+
+const VIEWS = {}, AFTER = {};
+
+/* ---------- Home ---------- */
+VIEWS.home = () => {
+  const missing = famsMissing();
+  const ppl = D.rooms.reduce((a, r) => a + r[1].length, 0);
+  const free = D.onboard.reduce((a, c) => a + c.items.length, 0);
+  const tiles = [
+    ["schedule", "🗓️", "Schedule", "The whole week as a bar chart: pre-trip, on the water, and post-trip."],
+    ["travel", "✈️", "Travel and hotel", `Flights, live tracking, and the hotel. ${missing.length ? `${missing.length} families still need to add plans.` : "Everyone's plans are in."}`],
+    ["rooms", "🛏️", "Who's in which room", `${ppl} people in ${D.rooms.length} staterooms. Search for anyone.`],
+    ["onboard", "🎢", "Free on board", `${free} free things to do, see, and eat on the ship, plus buddy challenges.`],
+    ["ports", "🏝️", "Nassau and CocoCay", "Each family's Nassau plans, and the CocoCay game plan."],
+    ["packing", "🧳", "Packing", "What everyone gets, plus a packing list you can check off."],
+    ["ideas", "💡", "Ideas board", "Everything from the family brainstorm."]
+  ];
+  return `
+  <section><div class="tiles">${tiles.map(([id, ic, h, p]) => `<a class="card tile" href="#/${id}"><div class="icon">${ic}</div><h3>${h}</h3><p>${p}</p><span class="go">Open →</span></a>`).join("")}</div></section>
+  <section><div class="head"><h2>The trip</h2><p>Everything booked so far.</p></div>
+    <dl class="facts">${D.trip.facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl></section>
+  <section><div class="head"><h2>Good to know</h2><p>What we've already found out.</p></div>
+    <div class="know">${D.goodToKnow.map(([ic, k, v]) => `<div class="card"><div class="icon">${ic}</div><h3>${esc(k)}</h3><p>${v}</p></div>`).join("")}</div></section>`;
+};
+
+/* ---------- Schedule (bar chart) ---------- */
+let gZoom = "all", gSel = null;
+const PHASE_COLOR = { pre: "var(--pre)", water: "var(--water)", post: "var(--post)" };
+const STYLE_COLOR = { ship: "var(--water)", port: "var(--teal)", group: "var(--coral)", meal: "var(--pre)", hotel: "var(--post)", fam: "var(--sea)" };
+VIEWS.schedule = () => `
+  <section>
+    <div class="head"><h2>The week at a glance</h2><p>Tap a phase to zoom in, and tap any bar for details. Scroll sideways on a phone. All times are Miami time.</p></div>
+    <div class="phase-cards">
+      <button class="card phase-card ${gZoom === "all" ? "on" : ""}" data-z="all" style="border-left-color:var(--sea)"><h3>Whole trip</h3><p>Saturday, Feb 13 to Saturday, Feb 20</p></button>
+      ${D.phases.map(p => `<button class="card phase-card ${gZoom === p.id ? "on" : ""}" data-z="${p.id}" style="border-left-color:${PHASE_COLOR[p.id]}"><h3>${p.name}</h3><p>${esc(p.blurb)}</p></button>`).join("")}
+    </div>
+    <div class="card g-wrap"><div class="gantt" id="gantt"></div></div>
+    <div class="legend">
+      <span style="--c:var(--water)">On the ship</span><span style="--c:var(--teal)">In port</span><span style="--c:var(--coral)">Family event</span>
+      <span style="--c:var(--pre)">Meal</span><span style="--c:var(--post)">Hotel night</span><span style="--c:var(--sea)">Family trip (flying)</span>
+      <span style="--c:#6E8C63">Family trip (driving)</span><span style="--c:linear-gradient(90deg,#fff,var(--sea))">Faded end: exact time not in yet</span>
+    </div>
+    <div class="card detail" id="gDetail"></div>
+  </section>
+  <section><div class="head"><h2>Day by day</h2></div>
+    <div class="days">${D.days.map(d => `
+      <div class="card day" style="--c:${PHASE_COLOR[d.phase]}">
+        <span class="pill tag" style="background:${PHASE_COLOR[d.phase]};color:#fff">${D.phases.find(p => p.id === d.phase).name}</span>
+        <div class="icon">${d.icon}</div><div class="date">${esc(d.date)}</div><h3>${esc(d.label)}</h3>
+        ${d.note ? `<p class="note">${esc(d.note)}</p>` : ""}
+        ${d.blocks.length ? `<ul>${d.blocks.map(([w, x]) => `<li><i>${esc(w)}</i>${esc(x)}</li>`).join("")}</ul>` : ""}
+      </div>`).join("")}</div></section>`;
+
+AFTER.schedule = () => {
+  document.querySelectorAll(".phase-card").forEach(b => b.onclick = () => { gZoom = b.dataset.z; route(); });
+  drawGantt();
+};
+
+function famEvent(f) {
+  if (!f.arrive || !f.depart) return null;
+  const a = f.arrive, d = f.depart;
+  const say = l => l.time ? fDayTime(l.time) : `${fDate(l.date)}${l.text ? ` (${l.text})` : ""}, exact time not in yet`;
+  return { label: f.family, start: a.time || a.approx, end: d.time || d.approx, fadeL: !a.time, fadeR: !d.time, drive: a.mode === "drive",
+    detail: `${a.mode === "drive" ? "Drives in" : "Arrives"} ${say(a)}${a.from ? ` from ${a.from}` : ""}${a.to && a.to !== "MIA" ? ` into ${a.to}` : ""}. ${d.mode === "drive" ? "Drives home" : "Leaves"} ${say(d)}.`,
+    text: `${a.time ? fTime(a.time) : "?"} to ${d.time ? fTime(d.time) : "?"}` };
+}
+
+function drawGantt() {
+  const el = $("gantt"); if (!el) return;
+  let s0 = t("2027-02-13T00:00:00-05:00"), s1 = t("2027-02-20T12:00:00-05:00");
+  if (gZoom !== "all") { const p = D.phases.find(x => x.id === gZoom); s0 = t(p.start) - 3 * H; s1 = t(p.end) + 3 * H; }
+  const hours = (s1 - s0) / H;
+  const labelW = innerWidth <= 600 ? 108 : 150;
+  const avail = Math.max(300, el.clientWidth - labelW - 2);
+  const W = Math.max(avail, hours * (gZoom === "all" ? 9 : 14));
+  const x = ms => ((ms - s0) / (s1 - s0)) * W;
+  const clip = (a, b) => [Math.max(a, s0), Math.min(b, s1)];
+
+  let bg = "";
+  for (let d = t("2027-02-12T00:00:00-05:00"); d <= s1; d += 24 * H) {
+    if (d >= s0) bg += `<div class="g-grid" style="left:${x(d)}px"></div>`;
+    const [n0, n1] = clip(d + 20 * H, d + 30 * H);
+    if (n1 > n0) bg += `<div class="g-night" style="left:${x(n0)}px;width:${x(n1) - x(n0)}px"></div>`;
   }
-  tick(); setInterval(tick, 30000);
+  const row = (label, inner, cls = "") => `<div class="g-row ${cls}"><div class="g-label" style="flex-basis:${labelW}px">${label}</div><div class="g-track" style="width:${W}px">${bg}${inner}</div></div>`;
 
-  $("facts").innerHTML = D.trip.facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("");
+  let days = "";
+  for (let d = t("2027-02-13T00:00:00-05:00"); d < s1; d += 24 * H) {
+    const [a, b] = clip(d, d + 24 * H); if (b <= a) continue;
+    days += `<div class="g-day" style="left:${x(a)}px;width:${x(b) - x(a)}px"><b>${fmt(d + 12 * H, { weekday: "short" })}</b>${fmt(d + 12 * H, { month: "short", day: "numeric" })}</div>`;
+  }
+  const phases = D.phases.map(p => {
+    const [a, b] = clip(t(p.start), t(p.end)); if (b <= a) return "";
+    return `<button class="g-phase" data-z="${p.id}" style="left:${x(a) + 1}px;width:${x(b) - x(a) - 2}px;background:${PHASE_COLOR[p.id]}">${p.name}</button>`;
+  }).join("");
 
-  $("days").innerHTML = D.days.map(day => `
-    <div class="card day${day.ship ? " ship" : ""}">
-      <div class="icon">${day.icon}</div>
-      <div class="date">${esc(day.date)}</div>
-      <h3>${esc(day.label)}</h3>
-      ${day.note ? `<p class="note">${esc(day.note)}</p>` : ""}
-      ${day.blocks.length ? `<ul>${day.blocks.map(([t, what]) => `<li><i>${esc(t)}</i>${esc(what)}</li>`).join("")}</ul>` : ""}
-    </div>`).join("");
+  const evs = [];
+  const bar = (ev, cls) => {
+    const [a, b] = clip(t(ev.start), t(ev.end)); if (b <= a) return "";
+    const i = evs.push(ev) - 1, w = x(b) - x(a);
+    const full = ev.text ? `${ev.label}, ${ev.text}` : ev.label;
+    const txt = w > full.length * 6.5 + 16 ? full : (w > ev.label.length * 6.5 + 12 ? ev.label : "");
+    return `<button class="bar ${cls} ${gSel === ev.key ? "sel" : ""}" data-i="${i}" style="left:${x(a)}px;width:${w}px" title="${esc(full)}">
+      ${ev.fadeL ? '<span class="fade-l"></span>' : ""}<span style="position:relative">${esc(txt)}</span>${ev.fadeR ? '<span class="fade-r"></span>' : ""}</button>`;
+  };
 
-  // goodToKnow text holds trusted markup from data.js
-  $("goodToKnow").innerHTML = D.goodToKnow.map(([icon, k, v]) =>
-    `<div class="card"><div class="icon">${icon}</div><h3>${esc(k)}</h3><p>${v}</p></div>`).join("");
+  let html = row("", days, "g-days") + row("Phase", phases);
+  for (const lane of D.lanes)
+    html += row(esc(lane.name), lane.events.map(([label, start, end, detail, style]) => bar({ key: label + start, label, start, end, detail, style }, style)).join(""));
+  html += row("Each family's trip", "", "g-group");
+  for (const f of D.travel) {
+    const ev = famEvent(f);
+    html += row(esc(f.family), ev ? bar({ ...ev, key: f.family, style: "fam" }, `fam ${ev.drive ? "drive" : ""}`)
+      : `<span class="g-unknown" style="left:${Math.max(8, x(Math.max(s0, t("2027-02-13T06:00:00-05:00"))))}px">Travel plans not in yet</span>`);
+  }
+  const scroll = el.scrollLeft;
+  el.innerHTML = html;
+  el.scrollLeft = scroll;
 
-  const H = D.hotel;
-  $("hotel").innerHTML = `<div class="big">🏨</div><div><h3>${esc(H.name)}</h3>
-    <div class="addr">${esc(H.address)} · <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(H.address)}" target="_blank" rel="noopener">Open in Maps</a></div>
-    <span class="status">${esc(H.status)}</span><ul>${H.perks.map(p => `<li>${esc(p)}</li>`).join("")}</ul></div>`;
+  el.querySelectorAll(".g-phase").forEach(b => b.onclick = () => { gZoom = b.dataset.z; route(); });
+  el.querySelectorAll(".bar").forEach(b => b.onclick = () => { gSel = evs[+b.dataset.i].key; drawGantt(); });
+  showDetail(evs.find(e => e.key === gSel) || evs.find(e => e.label === "Sail away") || evs[0]);
+}
 
-  const missing = D.travel.filter(r => !r[1]).map(r => r[0]);
-  $("travelStatus").innerHTML = missing.length
-    ? `<div class="alert">📣 <div><strong>Still need travel plans from:</strong> ${missing.map(esc).join(", ")}. Add them to the planning sheet!</div></div>`
-    : `<div class="alert ok">✅ <div>Everyone's travel plans are in.</div></div>`;
-  const leg = (icon, v) => `<div class="leg"><span>${icon}</span><span>${v ? esc(v) : `<span class="missing">Not in yet</span>`}</span></div>`;
-  const rooms = (sat, sun, fri) => `<span class="rooms">Rooms: Sat ${sat ?? "?"}, Sun ${sun ?? "?"}, Fri ${fri ?? "?"}</span>`;
-  $("families").innerHTML = D.travel.map(([fam, arr, dep, sat, sun, fri]) =>
-    `<div class="card fam"><h3>${esc(fam)} ${rooms(sat, sun, fri)}</h3>${leg("🛬", arr)}${leg("🛫", dep)}</div>`).join("");
-  const sum = i => D.travel.reduce((a, r) => a + (r[i] || 0), 0);
-  $("totals").textContent = `Hotel rooms needed so far: ${sum(3)} on Saturday night, ${sum(4)} on Sunday night, and ${sum(5)} on Friday night after the cruise.`;
+function showDetail(ev) {
+  if (!ev) { $("gDetail").innerHTML = ""; return; }
+  const when = ev.style === "fam" ? "" : `${fDayTime(ev.start)} to ${fDay(ev.start) === fDay(ev.end) ? fTime(ev.end) : fDayTime(ev.end)}`;
+  $("gDetail").innerHTML = `<span class="dot" style="background:${STYLE_COLOR[ev.style]}"></span>
+    <div><h3>${esc(ev.label)}</h3>${when ? `<div class="when">${when}</div>` : ""}<p>${esc(ev.detail)}</p></div>`;
+}
 
-  $("nassauList").innerHTML = D.nassau.map(([fam, plan]) =>
-    `<div class="plan"><b>${esc(fam)}</b>${plan ? `<span>${esc(plan)}</span>` : `<span class="tbd">Not decided yet</span>`}</div>`).join("");
-  $("nassauIdeas").innerHTML = `<strong>No-excursion ideas:</strong>` + D.nassauIdeas.map(i => `<span class="chip">${esc(i)}</span>`).join("");
+/* ---------- Travel ---------- */
+let travelTab = "families";
+const trackUrl = flight => `https://www.flightaware.com/live/flight/${encodeURIComponent(flight.replace(/\s+/g, "").toUpperCase())}`;
+function legHtml(kind, l) {
+  const ic = kind === "Arrive" ? "🛬" : "🛫";
+  if (!l) return `<div class="leg"><span class="ic">${ic}</span><div><div class="k">${kind}</div><span class="missing">Not in yet</span></div></div>`;
+  if (l.mode === "drive") return `<div class="leg"><span class="ic">🚗</span><div><div class="k">${kind}</div>
+    <div class="route">Driving</div><div class="time">${esc(l.text || fDate(l.date))}</div></div></div>`;
+  const route = l.from || l.to ? `${esc(l.from || "?")} → ${esc(l.to || "?")}` : "Flight";
+  const when = l.time ? fDayTime(l.time) : `${fDate(l.date)}${l.text ? ` (${esc(l.text)})` : ""}. <span class="missing">Exact time needed</span>`;
+  return `<div class="leg"><span class="ic">${ic}</span><div><div class="k">${kind}</div>
+    <div class="route">${route}</div><div class="time">${when}</div>
+    <div class="meta">${l.flight ? `<span class="pill">${esc(l.airline)} ${esc(l.flight)}</span><a class="track" href="${trackUrl(l.flight)}" target="_blank" rel="noopener">📡 Track flight</a>`
+      : `<span class="pill warn">Airline and flight number needed</span>`}</div></div></div>`;
+}
+function boardHtml(kind) {
+  const rows = D.travel.map(f => ({ f, l: kind === "arr" ? f.arrive : f.depart })).filter(r => r.l)
+    .sort((a, b) => t(a.l.time || a.l.approx) - t(b.l.time || b.l.approx));
+  const none = D.travel.filter(f => !(kind === "arr" ? f.arrive : f.depart)).map(f => f.family);
+  return `<div class="board"><table><tr><th>${kind === "arr" ? "Arrives" : "Departs"}</th><th>Family</th><th>Route</th><th>Flight</th><th>Live</th></tr>
+    ${rows.map(({ f, l }) => `<tr><td class="when">${l.time ? fDayTime(l.time) : `${fDate(l.date)}, time ?`}</td><td class="who">${esc(f.family)}</td>
+      <td>${l.mode === "drive" ? "Driving" : `${esc(l.from || "?")} → ${esc(l.to || "?")}`}</td>
+      <td>${l.mode === "drive" ? "" : (l.flight ? `${esc(l.airline)} ${esc(l.flight)}` : `<span class="tbd">Needed</span>`)}</td>
+      <td>${l.flight ? `<a href="${trackUrl(l.flight)}" target="_blank" rel="noopener">Track</a>` : ""}</td></tr>`).join("")}
+    ${none.map(n => `<tr><td class="when tbd">?</td><td class="who">${esc(n)}</td><td colspan="3" class="tbd">Plans not in yet</td></tr>`).join("")}
+  </table></div>`;
+}
+const travelBody = () => travelTab === "families"
+  ? `<div class="families">${D.travel.map(f => `<div class="card fam"><h3>${esc(f.family)}</h3>
+      <div class="rooms">Hotel rooms: Sat ${f.rooms[0] ?? "?"}, Sun ${f.rooms[1] ?? "?"}, Fri ${f.rooms[2] ?? "?"}</div>
+      ${legHtml("Arrive", f.arrive)}${legHtml("Depart", f.depart)}</div>`).join("")}</div>`
+  : boardHtml(travelTab);
+VIEWS.travel = () => {
+  const Hh = D.hotel, missing = famsMissing(), need = flightsNeeded();
+  const sum = i => D.travel.reduce((a, f) => a + (f.rooms[i] || 0), 0);
+  return `
+  <section><div class="head"><h2>Flights and arrivals</h2><p>On travel day, tap <strong>Track flight</strong> to see live status.</p></div>
+    ${missing.length ? `<div class="alert">📣 <div><strong>Still need travel plans from:</strong> ${missing.map(esc).join(", ")}.</div></div>` : ""}
+    ${need ? `<div class="alert info">✈️ <div><strong>${need} families still need to add airlines and flight numbers</strong> (with exact times) to the planning sheet so everyone can track them.</div></div>` : ""}
+    <div class="controls">${[["families", "By family"], ["arr", "Arrivals board"], ["dep", "Departures board"]].map(([k, n]) => `<button class="chip ${travelTab === k ? "on" : ""}" data-tab="${k}">${n}</button>`).join("")}</div>
+    <div id="travelBody">${travelBody()}</div></section>
+  <section><div class="head"><h2>The hotel</h2><p>Where we stay before (and for some, after) the cruise.</p></div>
+    <div class="card hotel"><div class="big">🏨</div><div><h3>${esc(Hh.name)}</h3>
+      <div class="addr">${esc(Hh.address)}. <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(Hh.address)}" target="_blank" rel="noopener">Open in Maps</a></div>
+      <span class="pill gold">${esc(Hh.status)}</span><ul>${Hh.perks.map(p => `<li>${esc(p)}</li>`).join("")}</ul>
+      <p class="totals">Rooms needed so far: <strong>${sum(0)}</strong> Saturday night, <strong>${sum(1)}</strong> Sunday night, and <strong>${sum(2)}</strong> Friday night after the cruise.</p></div></div></section>`;
+};
+AFTER.travel = () => document.querySelectorAll("[data-tab]").forEach(b => b.onclick = () => {
+  travelTab = b.dataset.tab;
+  document.querySelectorAll("[data-tab]").forEach(c => c.classList.toggle("on", c === b));
+  $("travelBody").innerHTML = travelBody();
+});
 
+/* ---------- Rooms ---------- */
+let roomQ = "", roomDeck = "all";
+VIEWS.rooms = () => {
+  const decks = [...new Set(D.rooms.map(r => r[0].slice(0, 2)))].sort();
+  return `<section><div class="head"><h2>Who's in which room</h2><p>${D.rooms.reduce((a, r) => a + r[1].length, 0)} people in ${D.rooms.length} staterooms. The first two digits of a room number are the deck.</p></div>
+    <div class="controls"><input class="search" id="roomQ" placeholder="🔎 Find someone, like Hannah or Walker" value="${esc(roomQ)}">
+      <button class="chip ${roomDeck === "all" ? "on" : ""}" data-deck="all">All decks</button>
+      ${decks.map(d => `<button class="chip ${roomDeck === d ? "on" : ""}" data-deck="${d}">Deck ${+d}</button>`).join("")}</div>
+    <div id="roomList"></div>
+    <p class="totals">The sheet lists a room number next to one person in each group, and the people below that person are shown sharing the room. Let Andrew know if anything looks off.</p></section>`;
+};
+function drawRooms() {
+  const q = roomQ.trim().toLowerCase();
+  const list = D.rooms.filter(([n, ppl]) => (roomDeck === "all" || n.startsWith(roomDeck)) && (!q || n.includes(q) || ppl.some(p => p.toLowerCase().includes(q))))
+    .sort((a, b) => a[0].localeCompare(b[0]));
+  $("roomList").innerHTML = list.length ? `<div class="rooms-grid">${list.map(([n, ppl]) => `<div class="card room">
+      <div class="num">${esc(n)}</div><div class="deck">Deck ${+n.slice(0, 2)}, ${ppl.length} ${ppl.length === 1 ? "person" : "people"}</div>
+      <ul>${ppl.map(p => `<li class="${q && p.toLowerCase().includes(q) ? "hit" : ""}">${esc(p)}</li>`).join("")}</ul></div>`).join("")}</div>`
+    : `<div class="card empty">No one matches "${esc(roomQ)}".</div>`;
+}
+AFTER.rooms = () => {
+  drawRooms();
+  $("roomQ").oninput = e => { roomQ = e.target.value; drawRooms(); };
+  document.querySelectorAll("[data-deck]").forEach(b => b.onclick = () => {
+    roomDeck = b.dataset.deck; document.querySelectorAll("[data-deck]").forEach(c => c.classList.toggle("on", c === b)); drawRooms();
+  });
+};
+
+/* ---------- Free on board ---------- */
+let actCat = "All", actQ = "";
+const FAV_KEY = "south-cruise-favs";
+VIEWS.onboard = () => `
+  <section><div class="head"><h2>Free on the ship</h2><p>All included in the fare, from Royal Caribbean's Wonder of the Seas page. Tap ⭐ to build your own list (saved on this device).</p></div>
+    <div class="controls"><input class="search" id="actQ" placeholder="🔎 Search, like slide or show" value="${esc(actQ)}"></div>
+    <div class="controls">${["All", ...D.onboard.map(c => c.cat), "⭐ My list"].map(c => `<button class="chip ${actCat === c ? "on" : ""}" data-cat="${esc(c)}">${D.onboard.find(o => o.cat === c)?.icon || ""} ${esc(c)}</button>`).join("")}</div>
+    <div id="actList"></div></section>
+  <section><div class="head"><h2>Buddy challenges</h2><p>Ideas from the planning sheet for buddy pairs and punch cards.</p></div>
+    <div class="buddies">${D.buddyIdeas.map(b => `<span>✅ ${esc(b)}</span>`).join("")}</div></section>
+  <section><div class="card extra"><h3 style="color:var(--sea)">💳 These cost extra</h3><ul>${D.costsExtra.map(c => `<li>${esc(c)}</li>`).join("")}</ul></div></section>`;
+function drawActs() {
+  const f = local.json(FAV_KEY) || [], q = actQ.trim().toLowerCase();
+  const items = D.onboard.flatMap(c => c.items.map(([n, d, tag]) => ({ n, d, tag, cat: c.cat, icon: c.icon })))
+    .filter(a => (actCat === "All" || a.cat === actCat || (actCat === "⭐ My list" && f.includes(a.n))) && (!q || (a.n + " " + a.d).toLowerCase().includes(q)));
+  $("actList").innerHTML = items.length ? `<div class="acts">${items.map(a => `<div class="card act">
+      <button class="star ${f.includes(a.n) ? "on" : ""}" data-n="${esc(a.n)}" aria-label="Add ${esc(a.n)} to my list">⭐</button>
+      <h3>${a.icon} ${esc(a.n)}</h3><p>${esc(a.d)}</p><span class="pill ${a.tag === "Adults only" ? "gold" : ""}">${esc(a.tag)}</span><span class="cat">${esc(a.cat)}</span></div>`).join("")}</div>`
+    : `<div class="card empty">${actCat === "⭐ My list" ? "Nothing starred yet. Tap ⭐ on anything you want to do." : "Nothing matches that search."}</div>`;
+  document.querySelectorAll(".star").forEach(b => b.onclick = () => {
+    const cur = local.json(FAV_KEY) || [], n = b.dataset.n;
+    local.set(FAV_KEY, JSON.stringify(cur.includes(n) ? cur.filter(x => x !== n) : [...cur, n])); drawActs();
+  });
+}
+AFTER.onboard = () => {
+  drawActs();
+  $("actQ").oninput = e => { actQ = e.target.value; drawActs(); };
+  document.querySelectorAll("[data-cat]").forEach(b => b.onclick = () => {
+    actCat = b.dataset.cat; document.querySelectorAll("[data-cat]").forEach(c => c.classList.toggle("on", c === b)); drawActs();
+  });
+};
+
+/* ---------- Ports ---------- */
+VIEWS.ports = () => {
+  const decided = D.nassau.filter(n => n[1]).length;
+  return `
+  <section><div class="head"><h2>🐬 Nassau, Tuesday</h2><p>In port 8:00 am to 5:00 pm. ${decided} of ${D.nassau.length} families have a plan so far.</p></div>
+    <div class="two">
+      <div class="card plans">${D.nassau.map(([f, p]) => `<div class="plan"><b>${esc(f)}</b>${p ? `<span>${esc(p)}</span>` : `<span class="tbd">Not decided yet</span>`}</div>`).join("")}</div>
+      <div class="card infocard"><h3>What to do</h3><p style="margin:0">${D.nassauInfo}</p>
+        <div class="tags"><strong>No-excursion ideas:</strong>${D.nassauIdeas.map(i => `<span class="pill">${esc(i)}</span>`).join("")}</div></div>
+    </div></section>
+  <section><div class="head"><h2>🏖️ Perfect Day at CocoCay, Thursday</h2><p>In port 7:00 am to 5:00 pm.</p></div>
+    <div class="card infocard"><ul>${D.cococayInfo.map(i => `<li>${i}</li>`).join("")}</ul></div></section>`;
+};
+
+/* ---------- Packing ---------- */
+const PACK_KEY = "south-cruise-packed";
+const packId = (c, i) => `${c}::${i}`;
+VIEWS.packing = () => `
+  <section><div class="head"><h2>What everyone gets</h2><p>Every person in the family will be given these, so you don't need to pack them.</p></div>
+    <div class="provided">${D.provided.map(([ic, n, d]) => `<div class="card gift"><div class="ic">${ic}</div><h3>${esc(n)}</h3><p>${esc(d)}</p></div>`).join("")}</div></section>
+  <section><div class="head"><h2>Packing list</h2><p>A first cut. Check things off as you pack; your checks are saved on this device.</p></div>
+    <div class="controls"><div class="progress"><div id="packBar"></div></div><strong id="packCount"></strong><button class="linkbtn" id="packReset">Start over</button></div>
+    <div class="pack">${D.packing.map(([cat, ic, items]) => `<div class="card"><h3>${ic} ${esc(cat)} <small data-count="${esc(cat)}"></small></h3>
+      ${items.map((it, i) => it.endsWith(":") ? `<p class="note">${esc(it)}</p>`
+        : `<label><input type="checkbox" data-pack="${esc(packId(cat, it))}" data-cat="${esc(cat)}"><span>${esc(it)}</span></label>`).join("")}</div>`).join("")}</div></section>`;
+function drawPack() {
+  const done = new Set(local.json(PACK_KEY) || []);
+  const boxes = [...document.querySelectorAll("[data-pack]")];
+  boxes.forEach(b => { b.checked = done.has(b.dataset.pack); b.parentElement.classList.toggle("done", b.checked); });
+  const n = boxes.filter(b => b.checked).length;
+  $("packBar").style.width = `${Math.round(100 * n / boxes.length)}%`;
+  $("packCount").textContent = `${n} of ${boxes.length} packed`;
+  document.querySelectorAll("[data-count]").forEach(s => {
+    const mine = boxes.filter(b => b.dataset.cat === s.dataset.count);
+    s.textContent = `${mine.filter(b => b.checked).length}/${mine.length}`;
+  });
+}
+AFTER.packing = () => {
+  drawPack();
+  document.querySelectorAll("[data-pack]").forEach(b => b.onchange = () => {
+    const done = new Set(local.json(PACK_KEY) || []);
+    b.checked ? done.add(b.dataset.pack) : done.delete(b.dataset.pack);
+    local.set(PACK_KEY, JSON.stringify([...done])); drawPack();
+  });
+  $("packReset").onclick = () => { local.del(PACK_KEY); drawPack(); };
+};
+
+/* ---------- Ideas ---------- */
+VIEWS.ideas = () => {
   const notes = ["#FFF1DA", "#E3F6F4", "#FFE9E6", "#E6F0FF", "#F3EAFE"];
-  $("ideaList").innerHTML = D.ideas.map(([who, idea], i) =>
-    `<div class="idea" style="background:${notes[i % notes.length]};--r:${[-1.2, .8, -.4, 1.1, -.8][i % 5]}deg">${esc(idea)}<span>${esc(who)}</span></div>`).join("");
-
-  $("footer").innerHTML = `<span class="boat">🚢</span>Pulled from the family planning sheet on ${esc(D.updated)}.<br>Add or change things in the sheet, and this page gets updated from it.`;
+  return `<section><div class="head"><h2>Ideas board</h2><p>From the family brainstorm. Nothing here is decided yet.</p></div>
+    <div class="ideas">${D.ideas.map(([who, idea], i) => `<div class="idea" style="background:${notes[i % 5]};--r:${[-1.2, .8, -.4, 1.1, -.8][i % 5]}deg">${esc(idea)}<span>${esc(who)}</span></div>`).join("")}</div></section>`;
+};
 </script>
 </body>
 </html>
