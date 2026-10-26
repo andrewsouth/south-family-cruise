@@ -235,10 +235,11 @@
 
   /* On board */
   .acts { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
-  .act { padding: 1.1rem 1.2rem; position: relative; }
+  .act { padding: 1.1rem 1.2rem; position: relative; display: flex; flex-direction: column; }
+  .act .tagrow { margin-top: auto; padding-top: .2rem; display: flex; align-items: center; gap: .4rem; }
   .act h3 { color: var(--sea); font-size: 1.1rem; padding-right: 2.2rem; }
   .act p { margin: .35rem 0 .6rem; font-size: .93rem; }
-  .act .cat { font-size: .78rem; color: var(--muted); font-weight: 500; margin-left: .4rem; }
+  .act .cat { font-size: .78rem; color: var(--muted); font-weight: 500; }
   .star { position: absolute; top: .8rem; right: .8rem; border: 0; background: none; font-size: 1.3rem; line-height: 1; padding: .2rem; filter: grayscale(1) opacity(.45); transition: transform .15s; }
   .star.on { filter: none; }
   .star:hover { transform: scale(1.2); }
@@ -707,7 +708,7 @@ function drawActs() {
     .filter(a => (actCat === "All" || a.cat === actCat || (actCat === "⭐ My list" && f.includes(a.n))) && (!q || (a.n + " " + a.d).toLowerCase().includes(q)));
   $("actList").innerHTML = items.length ? `<div class="acts">${items.map(a => `<div class="card act">
       <button class="star ${f.includes(a.n) ? "on" : ""}" data-n="${esc(a.n)}" aria-label="Add ${esc(a.n)} to my list">⭐</button>
-      <h3>${a.icon} ${esc(a.n)}</h3><p>${esc(a.d)}</p><span class="pill ${a.tag === "Adults only" ? "gold" : ""}">${esc(a.tag)}</span><span class="cat">${esc(a.cat)}</span></div>`).join("")}</div>`
+      <h3>${a.icon} ${esc(a.n)}</h3><p>${esc(a.d)}</p><div class="tagrow"><span class="pill ${a.tag === "Adults only" ? "gold" : ""}">${esc(a.tag)}</span><span class="cat">${esc(a.cat)}</span></div></div>`).join("")}</div>`
     : `<div class="card empty">${actCat === "⭐ My list" ? "Nothing starred yet. Tap ⭐ on anything you want to do." : "Nothing matches that search."}</div>`;
   document.querySelectorAll(".star").forEach(b => b.onclick = () => {
     const cur = local.json(FAV_KEY) || [], n = b.dataset.n;
