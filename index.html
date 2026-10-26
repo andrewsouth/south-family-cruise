@@ -130,6 +130,16 @@
   .leg { display: grid; grid-template-columns: 1.6rem 1fr; font-size: .92rem; margin-top: .45rem; }
   .missing { color: var(--coral); font-weight: 500; }
   .totals { margin-top: 1rem; color: var(--muted); font-size: .92rem; }
+  .hotel .addr { color: var(--muted); font-size: .95rem; margin-top: .2rem; }
+
+  /* Nassau */
+  .plans { padding: .4rem 0; }
+  .plan { display: flex; justify-content: space-between; gap: 1rem; padding: .7rem 1.2rem; border-top: 1px solid #F3ECE0; }
+  .plan:first-child { border-top: 0; }
+  .plan b { color: var(--sea); }
+  .plan .tbd { color: var(--coral); font-weight: 500; }
+  .chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; align-items: center; }
+  .chip { background: #E3F6F4; color: #0F5E55; font-weight: 500; font-size: .9rem; padding: .3rem .8rem; border-radius: 99px; }
 
   /* Ideas */
   .ideas { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: .9rem; }
@@ -168,6 +178,7 @@
   <a href="#schedule">Schedule</a>
   <a href="#know">Good to know</a>
   <a href="#travel">Travel and hotel</a>
+  <a href="#nassau">Nassau plans</a>
   <a href="#ideas">Ideas</a>
 </div></nav>
 
@@ -193,6 +204,12 @@
     <div id="travelStatus"></div>
     <div class="families" id="families"></div>
     <p class="totals" id="totals"></p>
+  </section>
+
+  <section id="nassau">
+    <div class="head"><h2>Nassau plans</h2><p>What each family is thinking for Tuesday in port (8:00 am to 5:00 pm).</p></div>
+    <div class="card plans" id="nassauList"></div>
+    <div class="chips" id="nassauIdeas"></div>
   </section>
 
   <section id="ideas">
@@ -238,6 +255,7 @@
 
   const H = D.hotel;
   $("hotel").innerHTML = `<div class="big">🏨</div><div><h3>${esc(H.name)}</h3>
+    <div class="addr">${esc(H.address)} · <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(H.address)}" target="_blank" rel="noopener">Open in Maps</a></div>
     <span class="status">${esc(H.status)}</span><ul>${H.perks.map(p => `<li>${esc(p)}</li>`).join("")}</ul></div>`;
 
   const missing = D.travel.filter(r => !r[1]).map(r => r[0]);
@@ -245,12 +263,15 @@
     ? `<div class="alert">📣 <div><strong>Still need travel plans from:</strong> ${missing.map(esc).join(", ")}. Add them to the planning sheet!</div></div>`
     : `<div class="alert ok">✅ <div>Everyone's travel plans are in.</div></div>`;
   const leg = (icon, v) => `<div class="leg"><span>${icon}</span><span>${v ? esc(v) : `<span class="missing">Not in yet</span>`}</span></div>`;
-  const rooms = (sat, sun) => (sat === null && sun === null) ? "" :
-    `<span class="rooms">Rooms: Sat ${sat ?? "?"}, Sun ${sun ?? "?"}</span>`;
-  $("families").innerHTML = D.travel.map(([fam, arr, dep, sat, sun]) =>
-    `<div class="card fam"><h3>${esc(fam)} ${rooms(sat, sun)}</h3>${leg("🛬", arr)}${leg("🛫", dep)}</div>`).join("");
+  const rooms = (sat, sun, fri) => `<span class="rooms">Rooms: Sat ${sat ?? "?"}, Sun ${sun ?? "?"}, Fri ${fri ?? "?"}</span>`;
+  $("families").innerHTML = D.travel.map(([fam, arr, dep, sat, sun, fri]) =>
+    `<div class="card fam"><h3>${esc(fam)} ${rooms(sat, sun, fri)}</h3>${leg("🛬", arr)}${leg("🛫", dep)}</div>`).join("");
   const sum = i => D.travel.reduce((a, r) => a + (r[i] || 0), 0);
-  $("totals").textContent = `Hotel rooms needed so far: ${sum(3)} on Saturday night and ${sum(4)} on Sunday night.`;
+  $("totals").textContent = `Hotel rooms needed so far: ${sum(3)} on Saturday night, ${sum(4)} on Sunday night, and ${sum(5)} on Friday night after the cruise.`;
+
+  $("nassauList").innerHTML = D.nassau.map(([fam, plan]) =>
+    `<div class="plan"><b>${esc(fam)}</b>${plan ? `<span>${esc(plan)}</span>` : `<span class="tbd">Not decided yet</span>`}</div>`).join("");
+  $("nassauIdeas").innerHTML = `<strong>No-excursion ideas:</strong>` + D.nassauIdeas.map(i => `<span class="chip">${esc(i)}</span>`).join("");
 
   const notes = ["#FFF1DA", "#E3F6F4", "#FFE9E6", "#E6F0FF", "#F3EAFE"];
   $("ideaList").innerHTML = D.ideas.map(([who, idea], i) =>
