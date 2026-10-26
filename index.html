@@ -187,6 +187,11 @@
   .track { display: inline-flex; align-items: center; gap: .3rem; background: var(--sea); color: #fff; text-decoration: none; font-size: .78rem; font-weight: 700; padding: .2rem .7rem; border-radius: 99px; }
   .track:hover { background: var(--teal); }
   .missing { color: var(--coral); font-weight: 500; }
+  .segs { margin-top: .35rem; }
+  .seg { display: flex; justify-content: space-between; align-items: center; gap: .5rem; padding: .3rem 0; font-size: .9rem; }
+  .seg + .seg { border-top: 1px dotted var(--line); }
+  .seg .track { flex: 0 0 auto; white-space: nowrap; }
+  .segnote { font-size: .76rem; color: var(--muted); margin-top: .15rem; }
   .maplinks { display: flex; flex-wrap: wrap; gap: .4rem; margin: .6rem 0 .2rem; }
   .maplinks a { background: #E3F6F4; color: #0F5E55; text-decoration: none; font-size: .82rem; font-weight: 700; padding: .25rem .75rem; border-radius: 99px; }
   .maplinks a:hover { background: var(--teal); color: #fff; }
@@ -576,11 +581,16 @@ function legHtml(kind, l) {
   if (!l) return `<div class="leg"><span class="ic">${ic}</span><div><div class="k">${kind}</div><span class="missing">Not in yet</span></div></div>`;
   if (l.mode === "drive") return `<div class="leg"><span class="ic">🚗</span><div><div class="k">${kind}</div>
     <div class="route">Driving</div><div class="time">${esc(l.text || fDate(l.date))}</div></div></div>`;
-  const route = l.from || l.to ? `${esc(l.from || "?")} → ${esc(l.to || "?")}` : "Flight";
+  const route = l.segments ? [l.segments[0][1], ...l.segments.map(g => g[3])].map(esc).join(" → ")
+    : (l.from || l.to ? `${esc(l.from || "?")} → ${esc(l.to || "?")}` : "Flight");
+  const segs = l.segments ? `<div class="segs">${l.segments.map(([f, a, at, b, bt]) => `<div class="seg">
+      <span><b>${esc(f)}</b> ${esc(a)} ${esc(at)} → ${esc(b)} ${esc(bt)}</span>
+      <a class="track" href="${trackUrl(f)}" target="_blank" rel="noopener">📡 Track</a></div>`).join("")}
+      <div class="segnote">${esc(l.airline)}. Times are local to each airport.</div></div>` : "";
   const when = l.time ? fDayTime(l.time) : `${fDate(l.date)}${l.text ? ` (${esc(l.text)})` : ""}. <span class="missing">Exact time needed</span>`;
   return `<div class="leg"><span class="ic">${ic}</span><div><div class="k">${kind}</div>
     <div class="route">${route}</div><div class="time">${when}</div>
-    <div class="meta">${l.flight ? `<span class="pill">${esc(l.airline)} ${esc(l.flight)}</span><a class="track" href="${trackUrl(l.flight)}" target="_blank" rel="noopener">📡 Track flight</a>`
+    ${segs}<div class="meta">${l.segments ? "" : l.flight ? `<span class="pill">${esc(l.airline)} ${esc(l.flight)}</span><a class="track" href="${trackUrl(l.flight)}" target="_blank" rel="noopener">📡 Track flight</a>`
       : `<span class="pill warn">Airline and flight number needed</span>`}</div></div></div>`;
 }
 function boardHtml(kind) {
@@ -589,8 +599,8 @@ function boardHtml(kind) {
   const none = D.travel.filter(f => !(kind === "arr" ? f.arrive : f.depart)).map(f => f.family);
   return `<div class="board"><table><tr><th>${kind === "arr" ? "Arrives" : "Departs"}</th><th>Family</th><th>Route</th><th>Flight</th><th>Live</th></tr>
     ${rows.map(({ f, l }) => `<tr><td class="when">${l.time ? fDayTime(l.time) : `${fDate(l.date)}, time ?`}</td><td class="who">${esc(f.family)}</td>
-      <td>${l.mode === "drive" ? "Driving" : `${esc(l.from || "?")} → ${esc(l.to || "?")}`}</td>
-      <td>${l.mode === "drive" ? "" : (l.flight ? `${esc(l.airline)} ${esc(l.flight)}` : `<span class="tbd">Needed</span>`)}</td>
+      <td>${l.mode === "drive" ? "Driving" : l.segments ? [l.segments[0][1], ...l.segments.map(g => g[3])].map(esc).join(" → ") : `${esc(l.from || "?")} → ${esc(l.to || "?")}`}</td>
+      <td>${l.mode === "drive" ? "" : (l.flight ? `${esc(l.airline)} ${esc(l.segments ? l.segments.map(g => g[0]).join(" + ") : l.flight)}` : `<span class="tbd">Needed</span>`)}</td>
       <td>${l.flight ? `<a href="${trackUrl(l.flight)}" target="_blank" rel="noopener">Track</a>` : ""}</td></tr>`).join("")}
     ${none.map(n => `<tr><td class="when tbd">?</td><td class="who">${esc(n)}</td><td colspan="3" class="tbd">Plans not in yet</td></tr>`).join("")}
   </table></div>`;
